@@ -1,0 +1,54 @@
+<app-admin-nav></app-admin-nav>
+
+<div class="container">
+    <md-card>
+        <md-card-content>
+            <table class="table table-hover">
+            <thead>
+                <tr>
+                <th>#</th>
+                <th>NAME</th>
+                <th>EMAIL</th>
+                <th>STATUS</th>
+                <th>DETAIL</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users; let i = index">
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{user.name}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.status}}</td>
+                    <td><button type="button" md-raised-button color="primary" data-target="#detailModal" data-toggle="modal"  (click)="detail(i)">Detail</button></td>
+                </tr>
+            </tbody>
+            </table>
+        </md-card-content>
+    </md-card>
+</div>
+
+<!--Model Start-->
+<div class="modal fade" id="detailModal" data-keyboard="false" data-backdrop="static" tabindex="-1">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h4 class="modal-title">Student Detail</h4>
+        <button class="close pull-right" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <ul>
+            <li><strong>Name: </strong>{{userDetail.name}}</li>
+            <li><strong>Email: </strong>{{userDetail.email}}</li>
+            <li><strong>Address: </strong>{{userDetail.address}}</li>
+            <li><strong>Phone: </strong>{{userDetail.phone}}</li>
+            <li><strong>Status: </strong>{{userDetail.status}}</li>
+        </ul>
+        </div>
+        <div class="modal-footer">
+        <button md-raised-button color="warn" (click)="blockUser()" *ngIf="!isBlock"  data-dismiss="modal">BLOCK</button>
+        <button md-raised-button color="warn" (click)="unBlockUser()" *ngIf="isBlock"  data-dismiss="modal">UN-BLOCK</button>
+        <button md-raised-button color="primary" data-dismiss="modal">Cancel</button>
+        </div>
+    </div>
+    </div>
+</div><!--Model End-->

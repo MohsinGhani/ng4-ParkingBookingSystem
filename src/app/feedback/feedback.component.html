@@ -1,0 +1,29 @@
+<app-user-nav></app-user-nav>
+<div class="container">
+<md-card>
+ <md-card-content>
+  <div class="row">
+    <div class="col-sm-6"><button type="button" class="btn btn-seconday btn-block" (click)="showFeedsForm()">Write Feeds</button></div>
+    <div class="col-sm-6"><button type="button" class="btn btn-seconday btn-block" (click)="showFeedsMsg()">Show Feeds</button></div>
+  </div><hr><br>
+  <div class="send-feedback-container" *ngIf="feedbackFormMode">  
+    <form [formGroup]="feeds" (ngSubmit)="feedback()">
+      <h3>Share Your Ideas and give Feedback for more Improvement</h3><br>
+      <div class="form-group">
+        <label for="message">Write Your Feedback and Ideas</label>
+          <textarea type="text" class="form-control"  formControlName="message"></textarea>
+          <small class="form-text text-muted" *ngIf="!feeds.controls['message'].valid && feeds.controls['message'].touched">feed Field is Required</small>
+      </div>
+      <button type="submit" class="button" md-raised-button color="primary" [disabled]="!feeds.valid">Send</button>
+    </form>
+  </div>
+  <div class="feedback-chatting-container" *ngIf="feedbackChattingMode">
+    <h3>Chatting with Admin</h3><hr>
+    <div class="chatting" *ngFor="let feed of feedsMsg | async">
+      <p><strong>{{feed.name}}:</strong> {{feed.message}}</p>
+    </div>
+    <button type="button" md-raised-button color="primary" class="btn float-right" (click)="showFeedsForm()">Reply</button>
+  </div>
+ </md-card-content>
+</md-card>
+</div><!--container-->

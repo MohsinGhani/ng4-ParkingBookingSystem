@@ -1,0 +1,15 @@
+.container{
+    margin-top: 75px;
+}
+
+table{
+    text-align: center;
+}
+
+thead tr th{
+    text-align: center;
+}
+
+md-card{
+    min-height: 400px;
+}

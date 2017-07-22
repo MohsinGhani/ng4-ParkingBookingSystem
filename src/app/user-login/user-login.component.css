@@ -1,0 +1,43 @@
+.container{
+    margin-top: 100px;
+}
+
+md-card{
+    width: 500px;
+    margin: 0 auto;
+    padding: 15px;
+    border-radius: 15px;
+}
+
+md-card-content{
+    padding: 10px;
+    height: 100%;
+}
+
+md-input-container{
+    width: 100%;
+}
+
+md-card-content button{
+    margin-right: 25px;
+    border: 1px solid #025aa5;
+    margin-bottom: -10px;
+}
+
+.alert-danger{
+    float: right;
+    padding: 5px;
+    margin-top: 3px;
+} 
+
+.pic{
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+.pic img{
+    width: 150px;
+    height: 150px;
+}

@@ -1,0 +1,55 @@
+<app-user-nav></app-user-nav>
+
+<div class="container">
+  <div *ngIf="menuMode">
+    <div class="card">
+      <div class="card-header">
+        CDGK Parking Plaza
+      </div>
+      <div class="card-block">
+        <h4 class="card-title">City District Government Karachi Parking Plaza (Saddar)</h4>
+        <p class="card-text"><strong>Address:</strong> Preedy Street (Sh-Liaquat/New MA Jinnah Rd), Saddar, Karachi</p>
+        <a class="btn float-right" md-raised-button color="accent" [routerLink]="['/user-dashboard/sadar-parking']" (click)="showSadarParking()">Booking</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        BFP Parking Place, Gulshan
+      </div>
+      <div class="card-block">
+        <h4 class="card-title">Bahria Foundation Public Parking Place, Gulshan</h4>
+        <p class="card-text"><strong>Address:</strong> Abul Hasan Isphahani Rd, Karachi</p>
+        <a class="btn float-right" md-raised-button color="accent" [routerLink]="['/user-dashboard/gulshan-parking']" (click)="showGulshanParking()">Booking</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        DHA Public Parking Place
+      </div>
+      <div class="card-block">
+        <h4 class="card-title">DHA Public Parking Place</h4>
+        <p class="card-text"><strong>Address:</strong> 2-B, East Street, Phase-I, DHA, Karachi-75500 Pakistan </p>
+        <a class="btn float-right" md-raised-button color="accent" [routerLink]="['/user-dashboard/dha-parking']" (click)="showDHAParking()">Booking</a>
+      </div>
+    </div>
+  </div><!--menuMode-->
+
+  <div *ngIf="sadarMode">
+    <app-sadar-parking></app-sadar-parking>
+  </div>
+
+  <div *ngIf="gulshanMode">
+    <app-gulshan-parking></app-gulshan-parking>
+  </div>
+
+  <div *ngIf="dhaMode">
+    <app-dha-parking></app-dha-parking>
+  </div>
+
+
+
+</div><!--container-->
+
+ 

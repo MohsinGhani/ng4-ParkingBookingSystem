@@ -1,0 +1,11 @@
+.nav-button{
+    color: #fff !important;
+    margin-top: 5px;
+    font-size: 18px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.menu-btn{
+    min-width: 160px !important;
+}

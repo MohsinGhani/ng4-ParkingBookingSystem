@@ -1,0 +1,170 @@
+<app-admin-nav></app-admin-nav>
+
+<div class="container">
+<md-card>
+ <md-card-content>
+     <button type="button" title="Refresh Data"  class="btn btn-sm btn-outline-secondary float-right" (click)="refreshBooking()"><i class="material-icons">refresh</i></button>
+     <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#CDGK" role="tab">CDGK (Sadar)</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#gulshan" role="tab">Gulshan parking</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#dha" role="tab">DHA Parking</a>
+        </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="CDGK" role="tabpanel">
+                <br>
+                <h2>CDGK BOOKING SLOTS</h2><br>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>NAME</th>
+                            <th>DATE</th>
+                            <th>SLOT TIMING</th>
+                            <th>DETAIL</th>
+                            <th>CANCEL BOOKING</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let slot of CDGKBooking; let i = index">
+                            <th scope="row">{{i+1}}</th>
+                            <td>{{slot.name}}</td>
+                            <td>{{slot.date}}</td>
+                            <td>{{slot.timeSlot}}</td>
+                            <td><button type="button" md-raised-button color="primary" class="btn" data-target="#CDGKdetailModal" data-toggle="modal" (click)="detailCDGKBooking(i)">Detail</button></td>
+                            <td><button type="button" md-raised-button color="warn" class="btn" (click)="cancelCDGKBooking(i)">Cancel</button></td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane" id="gulshan" role="tabpanel">
+                <br>
+                <h2>GULSHAN BOOKING SLOTS</h2><br>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>NAME</th>
+                            <th>DATE</th>
+                            <th>SLOT TIMING</th>
+                            <th>DETAIL</th>
+                            <th>CANCEL BOOKING</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let slot of gulshanBooking; let i = index">
+                            <th scope="row">{{i+1}}</th>
+                            <td>{{slot.name}}</td>
+                            <td>{{slot.date}}</td>
+                            <td>{{slot.timeSlot}}</td>
+                            <td><button type="button" md-raised-button color="primary" class="btn" data-target="#gulshanDetailModal" data-toggle="modal" (click)="detailGulshanBooking(i)">Detail</button></td>
+                            <td><button type="button" md-raised-button color="warn" class="btn" (click)="cancelGulshanBooking(i)">Cancel</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane" id="dha" role="tabpanel">
+                <br>
+                <h2>DHA BOOKING SLOTS</h2><br>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>NAME</th>
+                            <th>DATE</th>
+                            <th>SLOT TIMING</th>
+                            <th>DETAIL</th>
+                            <th>CANCEL BOOKING</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let slot of DHABooking; let i = index">
+                            <th scope="row">{{i+1}}</th>
+                            <td>{{slot.name}}</td>
+                            <td>{{slot.date}}</td>
+                            <td>{{slot.timeSlot}}</td>
+                            <td><button type="button" md-raised-button color="primary" class="btn"  data-target="#DHAdetailModal" data-toggle="modal" (click)="detailDHABooking(i)">Detail</button></td>
+                            <td><button type="button" md-raised-button color="warn" class="btn" (click)="cancelDHABooking(i)">Cancel</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+ </md-card-content>
+</md-card>
+</div>
+
+<div class="modal fade" id="CDGKdetailModal" data-keyboard="false" data-backdrop="static" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Booking Detail</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <ul>
+                <li><strong>NAME: </strong>{{BookingDetail.name}}</li>
+                <li><strong>EMAIL: </strong>{{BookingDetail.email}}</li>
+                <li><strong>PHONE: </strong>{{BookingDetail.phone}}</li>                
+                <li><strong>DATE: </strong>{{BookingDetail.date}}</li>
+                <li><strong>TIME SLOT: </strong>{{BookingDetail.timeSlot}}</li>
+                <li><strong>SLOT NUMBER: </strong>{{BookingDetail.slotNumber}}</li>
+                <li><strong>PRICE: </strong>{{BookingDetail.price}}</li>
+            </ul>
+        </div>
+        </div>
+    </div>
+</div><!--CDGK Modal-->
+
+<div class="modal fade" id="gulshanDetailModal" data-keyboard="false" data-backdrop="static" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Booking Detail</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <ul>
+                <li><strong>NAME: </strong>{{BookingDetail.name}}</li>
+                <li><strong>EMAIL: </strong>{{BookingDetail.email}}</li>
+                <li><strong>PHONE: </strong>{{BookingDetail.phone}}</li>                
+                <li><strong>DATE: </strong>{{BookingDetail.date}}</li>
+                <li><strong>TIME SLOT: </strong>{{BookingDetail.timeSlot}}</li>
+                <li><strong>SLOT NUMBER: </strong>{{BookingDetail.slotNumber}}</li>
+                <li><strong>PRICE: </strong>{{BookingDetail.price}}</li>
+            </ul>
+        </div>
+        </div>
+    </div>
+</div><!--CDGK Modal-->
+
+<div class="modal fade" id="DHAdetailModal" data-keyboard="false" data-backdrop="static" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Booking Detail</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <ul>
+                <li><strong>NAME: </strong>{{BookingDetail.name}}</li>
+                <li><strong>EMAIL: </strong>{{BookingDetail.email}}</li>
+                <li><strong>PHONE: </strong>{{BookingDetail.phone}}</li>                
+                <li><strong>DATE: </strong>{{BookingDetail.date}}</li>
+                <li><strong>TIME SLOT: </strong>{{BookingDetail.timeSlot}}</li>
+                <li><strong>SLOT NUMBER: </strong>{{BookingDetail.slotNumber}}</li>
+                <li><strong>PRICE: </strong>{{BookingDetail.price}}</li>
+            </ul>
+        </div>
+        </div>
+    </div>
+</div><!--CDGK Modal-->

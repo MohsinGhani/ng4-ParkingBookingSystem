@@ -1,0 +1,35 @@
+<nav class="navbar navbar-toggleable-md fixed-top bg-primary" style=" border-bottom:3px solid #000">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" style="color:#fff" [routerLink]="['/admin-dashboard']">Online Parking</a>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link active nav-button" [routerLink]="['/admin-dashboard']">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link nav-button" [routerLink]="['/admin-dashboard/users']">Users</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link nav-button" [routerLink]="['/admin-dashboard/admin-feedback']">Feedback</a>
+      </li>
+    </ul>
+    <div class="form-inline my-2 my-lg-0">
+      <ul class="navbar-nav mr-auto">
+      <li class="nav-item" >
+          <div class="btn-group">
+            <button type="button" md-raised-button  class="btn dropdown-toggle dropdown-toggle-split menu-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin
+            <span class="sr-only">Toggle Dropdown</span></button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" [routerLink]="['/admin-dashboard/users']">Usres</a>
+              <a class="dropdown-item" [routerLink]="['/admin-dashboard']">Booking</a>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item" (click)="logout()">Logout</button>
+            </div>
+          </div>
+      </li>
+    </ul>
+    </div>
+  </div>
+</nav>

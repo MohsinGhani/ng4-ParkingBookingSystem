@@ -1,0 +1,38 @@
+<app-admin-nav></app-admin-nav>
+
+<div class="container">
+    <div class="list" *ngIf="listMode">
+        <h2>Users Feedback</h2>
+        <md-card *ngFor="let user of feedUserData; let i = index">
+            <md-card-content>
+                <h5>{{user.name}}</h5>
+                <button type="button" md-raised-button color="primary" class="float-right" (click)="showMessage(i)">Messages</button>
+                <p>{{user.email}}</p>
+            </md-card-content>
+        </md-card>
+    </div>
+
+    <div *ngIf="feedsMode">
+        <md-card class="feeds">
+            <h3>Feedback by {{name}}</h3>
+            <md-card-content>
+                <button type="button" md-raised-button color="warn" class="float-right" (click)="showList()">Back</button>
+                <ul class="feed-container" *ngFor="let feed of feeds; let i = index">
+                    <li><strong>{{feed.name}}:</strong>  {{feed.message}}</li>
+                </ul>
+                <br>
+                <form #replyForm="ngForm" novalidate (ngSubmit)="replyToUser()">
+                <div class="form-group">
+                    <textarea type="text" [(ngModel)]="reply.message" #message="ngModel" name="message" id="message" class="form-control" required></textarea>
+                    <!--Validation Divs For Name-->
+                    <div *ngIf="message.errors && (message.dirty || message.touched)" class="alert alert-danger">
+                    <small [hidden]="!message.errors.required">Text is Required!</small>
+                    </div>
+                </div>
+                <button type="submit" [disabled]="!replyForm.form.valid" class="button" md-raised-button color="primary">Reply</button>
+                </form>
+
+            </md-card-content>
+        </md-card>
+    </div>
+</div>

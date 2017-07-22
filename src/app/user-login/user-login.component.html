@@ -1,0 +1,36 @@
+<app-nav></app-nav>
+
+<div class="container">
+  
+<div class="pic">
+    <img class="image" src="./assets/images/login.png" alt="Admin">
+  </div>
+<md-card>
+ <md-card-content>
+   <form (ngSubmit)="login()" #loginForm="ngForm" novalidate>
+      <md-input-container>
+        <input type="text" mdInput placeholder="Enter Your Email" [(ngModel)]="user.email" #email="ngModel" name="email" id="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required>
+      </md-input-container>
+      <!--Validation Divs For Email-->
+      <div *ngIf="email.errors && (email.dirty || email.touched)" class="alert alert-danger">
+        <small [hidden]="!email.errors.required">Email Address is Required!</small>
+        <small [hidden]="!email.errors.pattern">Email format should be mohsin@gmail.com</small>
+      </div>
+      <br>
+      <md-input-container>
+        <input type="password" mdInput placeholder="Enter Your Password" [(ngModel)]="user.password" minlength="6" #password="ngModel" name="password" id="password" required>
+      </md-input-container>
+      <!--Validation Divs For password-->
+      <div *ngIf="password.errors && (password.dirty || password.touched)" class="alert alert-danger">
+        <small [hidden]="!password.errors.required">Password is Required!</small>
+        <small class="form-text text-muted" [hidden]="!password.errors.minlength">Name must be at least 6 characters long.</small>
+      </div>
+      
+      <button type="submit" md-raised-button color="primary"  [disabled]="!loginForm.form.valid">Login</button>
+      <button type="button" md-raised-button color="primary" (click)="signUp()" [disabled]="!loginForm.form.valid">Register</button>
+          
+      </form>
+ </md-card-content>
+ 
+</md-card>
+</div>

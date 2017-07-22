@@ -1,0 +1,11 @@
+.container{
+    margin-top: 75px;
+}
+
+md-card{
+    min-height: 350px;
+}
+
+chatting{
+    background: #ccc;
+}

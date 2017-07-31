@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from './../services/user.service';
+import {  FirebaseListObservable } from 'angularfire2/database';
 
 @Component({
   selector: 'app-my-booking',
@@ -7,44 +8,30 @@ import { UserService } from './../services/user.service';
   styleUrls: ['./my-booking.component.css']
 })
 export class MyBookingComponent implements OnInit {
-  CDGKbooking=[];
-  gulshanBooking=[];
-  DHAbooking = [];
+  CDGKBooking:FirebaseListObservable<any>;
+  gulshanBooking:FirebaseListObservable<any>;
+  DHABooking:FirebaseListObservable<any>;
+
   constructor(private _UserService:UserService) {
     _UserService.checkUserProfile()
-    this.CDGKbooking = _UserService.clearCDGKbooking()
-    this.CDGKbooking = _UserService.getCDGKbooking();
-    this.gulshanBooking = _UserService.clearGulshanBooking();
+    this.CDGKBooking = _UserService.getCDGKbooking();
     this.gulshanBooking = _UserService.getGulshanBooking();
-    this.DHAbooking = _UserService.clearDHAbooking();
-    this.DHAbooking = _UserService.getDHAbooking();
-}
+    this.DHABooking = _UserService.getDHAbooking();
+  }
   
   ngOnInit() {
   }
 
-  cancelCDGKBooking(index){
-    this._UserService.cancelCDGKBooking(index);
-    this.refreshBooking();
+  cancelCDGKBooking(key){
+    this._UserService.cancelCDGKBooking(key);
   }
 
-  cancelGulshanBooking(index){
-    this._UserService.cancelGulshanBooking(index);
-    this.refreshBooking();
+  cancelGulshanBooking(key){
+    this._UserService.cancelGulshanBooking(key);
   }
 
-  cancelDHABooking(index){
-    this._UserService.cancelDHABooking(index);
-    this.refreshBooking();
-  }
-
-  refreshBooking(){
-    this.CDGKbooking = this._UserService.clearCDGKbooking()
-    this.CDGKbooking = this._UserService.getCDGKbooking();
-    this.gulshanBooking = this._UserService.clearGulshanBooking();
-    this.gulshanBooking = this._UserService.getGulshanBooking();
-    this.DHAbooking = this._UserService.clearDHAbooking();
-    this.DHAbooking = this._UserService.getDHAbooking();
+  cancelDHABooking(key){
+    this._UserService.cancelDHABooking(key);
   }
 
 }

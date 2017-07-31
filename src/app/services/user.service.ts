@@ -177,6 +177,12 @@ export class UserService {
     return currentUser;
   }
 
+  //just for user nav
+  getUserName(){
+    this.currentUserKey = localStorage.getItem('currentUserKey');
+    return this._AngularFireDatabase.object('/users/' + this.currentUserKey);
+  }
+
   checkUserProfile(){
     let currentUser = JSON.parse(localStorage.getItem("currentUserData")) || [];
      if(currentUser.name == "" && currentUser.address == "" && currentUser.phone == ""){
@@ -211,90 +217,76 @@ export class UserService {
     return data;
   }
 
-  currentUserCDGKbooking=[];
-  currentUserCDGKbookingKeys=[];
+
   getCDGKbooking(){
       this.currentUserKey = localStorage.getItem('currentUserKey');
-      //get booking data
-      firebase.database().ref('/CDGKreservedSlotsList/').on('child_added', (snapshot) => {
-          if(snapshot.val().key == this.currentUserKey){
-            this.currentUserCDGKbooking.push(snapshot.val());
-          }
+      return this._AngularFireDatabase.list('/CDGKreservedSlotsList', {
+              query: {
+                orderByChild: 'key',
+                equalTo: this.currentUserKey
+              }
       });
-      //get booking data
-      firebase.database().ref('/CDGKreservedSlotsList/').on('child_added', (snapshot) => {
-          if(snapshot.val().key == this.currentUserKey){
-            this.currentUserCDGKbookingKeys.push(snapshot.key);
-          }
-      });
-      return this.currentUserCDGKbooking;
   }
 
-  clearCDGKbooking(){
-    return this.currentUserCDGKbooking = [];
+  cancelCDGKBooking(key){
+    this._AngularFireDatabase.list('/CDGKreservedSlotsList').remove(key); 
   }
 
-  cancelCDGKBooking(index){
-    let key = this.currentUserCDGKbookingKeys[index];
-    firebase.database().ref('CDGKreservedSlotsList').child(key).remove();
-  }
   //////////////// gulshan booking start ///////////////////////////////
-  currentUserGulshanBooking=[];
-  currentUserGulshanBookingKeys=[];
   getGulshanBooking(){
+
       this.currentUserKey = localStorage.getItem('currentUserKey');
-      //get booking data
-      firebase.database().ref('/gulshanReservedSlotsList/').on('child_added', (snapshot) => {
-          if(snapshot.val().key == this.currentUserKey){
-            this.currentUserGulshanBooking.push(snapshot.val());
-          }
+      return this._AngularFireDatabase.list('/gulshanReservedSlotsList', {
+              query: {
+                orderByChild: 'key',
+                equalTo: this.currentUserKey
+              }
       });
       //get booking data
-      firebase.database().ref('/gulshanReservedSlotsList/').on('child_added', (snapshot) => {
-          if(snapshot.val().key == this.currentUserKey){
-            this.currentUserGulshanBookingKeys.push(snapshot.key);
-          }
-      });
-      return this.currentUserGulshanBooking;
+      // firebase.database().ref('/gulshanReservedSlotsList/').on('child_added', (snapshot) => {
+      //     if(snapshot.val().key == this.currentUserKey){
+      //       this.currentUserGulshanBooking.push(snapshot.val());
+      //     }
+      // });
+      // //get booking data
+      // firebase.database().ref('/gulshanReservedSlotsList/').on('child_added', (snapshot) => {
+      //     if(snapshot.val().key == this.currentUserKey){
+      //       this.currentUserGulshanBookingKeys.push(snapshot.key);
+      //     }
+      // });
+      // return this.currentUserGulshanBooking;
   }
 
-  clearGulshanBooking(){
-    return this.currentUserGulshanBooking = [];
-  }
-
-  cancelGulshanBooking(index){
-    let key = this.currentUserGulshanBookingKeys[index];
-    firebase.database().ref('gulshanReservedSlotsList').child(key).remove();
-  }
-
+  cancelGulshanBooking(key){
+    this._AngularFireDatabase.list('/gulshanReservedSlotsList').remove(key); 
+  }    
   ////////////////////DHA booking start //////////////////////////
 
-  currentUserDHAbooking=[];
-  currentUserDHAbookingKeys=[];
   getDHAbooking(){
       this.currentUserKey = localStorage.getItem('currentUserKey');
-      //get booking data
-      firebase.database().ref('/DHAreservedSlotsList/').on('child_added', (snapshot) => {
-          if(snapshot.val().key == this.currentUserKey){
-            this.currentUserDHAbooking.push(snapshot.val());
-          }
+      return this._AngularFireDatabase.list('/DHAreservedSlotsList', {
+              query: {
+                orderByChild: 'key',
+                equalTo: this.currentUserKey
+              }
       });
       //get booking data
-      firebase.database().ref('/DHAreservedSlotsList/').on('child_added', (snapshot) => {
-          if(snapshot.val().key == this.currentUserKey){
-            this.currentUserDHAbookingKeys.push(snapshot.key);
-          }
-      });
-      return this.currentUserDHAbooking;
+      // firebase.database().ref('/DHAreservedSlotsList/').on('child_added', (snapshot) => {
+      //     if(snapshot.val().key == this.currentUserKey){
+      //       this.currentUserDHAbooking.push(snapshot.val());
+      //     }
+      // });
+      // //get booking data
+      // firebase.database().ref('/DHAreservedSlotsList/').on('child_added', (snapshot) => {
+      //     if(snapshot.val().key == this.currentUserKey){
+      //       this.currentUserDHAbookingKeys.push(snapshot.key);
+      //     }
+      // });
+      // return this.currentUserDHAbooking;
   }
 
-  clearDHAbooking(){
-    return this.currentUserDHAbooking = [];
-  }
-
-  cancelDHABooking(index){
-    let key = this.currentUserDHAbookingKeys[index];
-    firebase.database().ref('DHAreservedSlotsList').child(key).remove();
+  cancelDHABooking(key){
+    this._AngularFireDatabase.list('/DHAreservedSlotsList').remove(key); 
   }
 
   //this function is call from user dashboard for clear reserve slot data

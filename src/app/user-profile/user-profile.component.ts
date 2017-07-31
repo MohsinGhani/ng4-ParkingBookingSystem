@@ -48,6 +48,8 @@ export class UserProfileComponent implements OnInit {
     let currentUser = JSON.parse(localStorage.getItem("currentUserData")) || [];
      if(currentUser.name == "" && currentUser.address == "" && currentUser.phone == ""){
         this.alert = true;
+        this.profileMode = false;
+        this.updateProfileMode = true;
      };
   }
 }

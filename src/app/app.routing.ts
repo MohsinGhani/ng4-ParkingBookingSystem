@@ -3,7 +3,6 @@ import { HomeComponent } from './home/home.component'
 import { AdminLoginComponent } from './admin-login/admin-login.component'
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component'
 import { UsersComponent } from './users/users.component'
-import { BookingComponent } from './booking/booking.component'
 import { AdminFeedbackComponent } from './admin-feedback/admin-feedback.component'
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component'
 import { UserLoginComponent } from './user-login/user-login.component'
@@ -25,7 +24,6 @@ const appRoutes: Routes = [
     { path: 'admin', component: AdminLoginComponent },
     { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate:[AdminAuthGuard] },
     { path: 'admin-dashboard/users', component: UsersComponent, canActivate:[AdminAuthGuard] },
-    { path: 'admin-dashboard/booking', component: BookingComponent, canActivate:[AdminAuthGuard] },
     { path: 'admin-dashboard/admin-feedback', component: AdminFeedbackComponent, canActivate:[AdminAuthGuard] },
     { path: 'user-login', component: UserLoginComponent },
     { path: 'user-dashboard', component: UserDashboardComponent, canActivate:[AuthGuard] },

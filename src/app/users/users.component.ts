@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from './../services/admin.service'
+import {  FirebaseListObservable,FirebaseObjectObservable  } from 'angularfire2/database';
 
 @Component({
   selector: 'app-users',
@@ -7,36 +8,39 @@ import { AdminService } from './../services/admin.service'
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
-  users = [];
-  userDetail = {name:'',email:'',phone:'',address:'',status:''};
+  users:FirebaseListObservable<any>;;
+  userDetail: FirebaseObjectObservable<any>;
   isBlock = false;
   index;
   constructor(private _AdminService:AdminService) {
-    this.users = _AdminService.clearUsers();
-    _AdminService.fetchUsers();
+    // _AdminService.fetchUsers();
     this.users = _AdminService.getUsers();
   }
 
   ngOnInit() {
   }
 
-  detail(i){
-    this.index = i;
-    this.userDetail = this.users[i]
-    if( this.userDetail.status == 'de-active'){
-      this.isBlock = true;
-    }
-    else{
-      this.isBlock = false;
-    }
+  detail(key){
+    this.userDetail = this._AdminService.getUserDetail(key);
+    
+    this.userDetail.subscribe(user => {
+      if(user.status == 'de-active'){
+          this.isBlock = true;
+      }
+      else{
+          this.isBlock = false;
+      }
+    });
   }
 
   blockUser(){
-    this._AdminService.blockUser(this.index,this.userDetail);
+    // this._AdminService.blockUser(this.index,this.userDetail);
+    this.userDetail.update({ status: 'de-active' });
   }
 
   unBlockUser(){
-    this._AdminService.unBlockUser(this.index,this.userDetail);
+    // this._AdminService.unBlockUser(this.index,this.userDetail);
+    this.userDetail.update({ status: 'active' });
   }
 
 

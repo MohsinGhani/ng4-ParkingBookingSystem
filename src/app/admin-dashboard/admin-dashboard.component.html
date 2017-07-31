@@ -3,7 +3,6 @@
 <div class="container">
 <md-card>
  <md-card-content>
-     <button type="button" title="Refresh Data"  class="btn btn-sm btn-outline-secondary float-right" (click)="refreshBooking()"><i class="material-icons">refresh</i></button>
      <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
@@ -21,82 +20,191 @@
         <div class="tab-content">
             <div class="tab-pane active" id="CDGK" role="tabpanel">
                 <br>
-                <h2>CDGK BOOKING SLOTS</h2><br>
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>NAME</th>
-                            <th>DATE</th>
-                            <th>SLOT TIMING</th>
-                            <th>DETAIL</th>
-                            <th>CANCEL BOOKING</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let slot of CDGKBooking; let i = index">
-                            <th scope="row">{{i+1}}</th>
-                            <td>{{slot.name}}</td>
-                            <td>{{slot.date}}</td>
-                            <td>{{slot.timeSlot}}</td>
-                            <td><button type="button" md-raised-button color="primary" class="btn" data-target="#CDGKdetailModal" data-toggle="modal" (click)="detailCDGKBooking(i)">Detail</button></td>
-                            <td><button type="button" md-raised-button color="warn" class="btn" (click)="cancelCDGKBooking(i)">Cancel</button></td>
-                        </tr>
-                        
-                    </tbody>
-                </table>
+                <div *ngIf="!searchMode">
+                    <h2>CDGK BOOKING SLOTS</h2>
+                    <button type="submit" md-button class="float-right" (click)="searchMode=true"><i class="material-icons">search</i></button>
+                    <br><br>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>NAME</th>
+                                <th>DATE</th>
+                                <th>SLOT TIMING</th>
+                                <th>DETAIL</th>
+                                <th>CANCEL BOOKING</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let slot of CDGKBooking | async; let i = index">
+                                <th scope="row">{{i+1}}</th>
+                                <td>{{slot.name}}</td>
+                                <td>{{slot.date}}</td>
+                                <td>{{slot.timeSlot}}</td>
+                                <td><button type="button" md-raised-button color="primary" class="btn" data-target="#CDGKdetailModal" data-toggle="modal" (click)="detailCDGKBooking(slot.$key)">Detail</button></td>
+                                <td><button type="button" md-raised-button color="warn" class="btn" (click)="cancelCDGKBooking(slot.$key)">Cancel</button></td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div *ngIf="searchMode">
+                    <form (ngSubmit)="searchCDGK()" #search="ngForm" novalidate>
+                        <md-input-container class="col-sm-12">
+                            <input type="number"  (ngModelChange)="searchCDGKSlot($event)" autofocus mdInput placeholder="Search By Slot Number" [(ngModel)]="slotNumber"  name="slotNumber" id="slotNumber" required>
+                        </md-input-container>
+                        <button type="button" md-raised-button color="primary" class="float-right" (click)="searchMode=false" style="margin-right:15px">Cancel</button>
+                    </form>
+                    <br><br>
+                    <div>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>NAME</th>
+                                    <th>DATE</th>
+                                    <th>SLOT TIMING</th>
+                                    <th>PRICE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let slot of CDGKSearchSlots | async; let i = index">
+                                    <th scope="row">{{i+1}}</th>
+                                    <td>{{slot.name}}</td>
+                                    <td>{{slot.date}}</td>
+                                    <td>{{slot.timeSlot}}</td>
+                                    <td>{{slot.price}}</td>
+                                </tr>     
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
+
             <div class="tab-pane" id="gulshan" role="tabpanel">
                 <br>
-                <h2>GULSHAN BOOKING SLOTS</h2><br>
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>NAME</th>
-                            <th>DATE</th>
-                            <th>SLOT TIMING</th>
-                            <th>DETAIL</th>
-                            <th>CANCEL BOOKING</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let slot of gulshanBooking; let i = index">
-                            <th scope="row">{{i+1}}</th>
-                            <td>{{slot.name}}</td>
-                            <td>{{slot.date}}</td>
-                            <td>{{slot.timeSlot}}</td>
-                            <td><button type="button" md-raised-button color="primary" class="btn" data-target="#gulshanDetailModal" data-toggle="modal" (click)="detailGulshanBooking(i)">Detail</button></td>
-                            <td><button type="button" md-raised-button color="warn" class="btn" (click)="cancelGulshanBooking(i)">Cancel</button></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div *ngIf="!searchMode">
+                    <h2>GULSHAN BOOKING SLOTS</h2>
+                    <button type="submit" md-button class="float-right" (click)="searchMode=true"><i class="material-icons">search</i></button>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>NAME</th>
+                                <th>DATE</th>
+                                <th>SLOT TIMING</th>
+                                <th>DETAIL</th>
+                                <th>CANCEL BOOKING</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let slot of gulshanBooking | async; let i = index">
+                                <th scope="row">{{i+1}}</th>
+                                <td>{{slot.name}}</td>
+                                <td>{{slot.date}}</td>
+                                <td>{{slot.timeSlot}}</td>
+                                <td><button type="button" md-raised-button color="primary" class="btn" data-target="#gulshanDetailModal" data-toggle="modal" (click)="detailGulshanBooking(slot.$key)">Detail</button></td>
+                                <td><button type="button" md-raised-button color="warn" class="btn" (click)="cancelGulshanBooking(slot.$key)">Cancel</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div *ngIf="searchMode">
+                    <form (ngSubmit)="searchCDGK()" #search="ngForm" novalidate>
+                        <md-input-container class="col-sm-12">
+                            <input type="number"  (ngModelChange)="searchGulshanSlot($event)" autofocus mdInput placeholder="Search By Slot Number" [(ngModel)]="slotNumber"  name="slotNumber" id="slotNumber" required>
+                        </md-input-container>
+                        <button type="button" md-raised-button color="primary" class="float-right" (click)="searchMode=false" style="margin-right:15px">Cancel</button>
+                    </form>
+                    <br><br>
+                    <div>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>NAME</th>
+                                    <th>DATE</th>
+                                    <th>SLOT TIMING</th>
+                                    <th>PRICE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let slot of GulshanSearchSlots | async; let i = index">
+                                    <th scope="row">{{i+1}}</th>
+                                    <td>{{slot.name}}</td>
+                                    <td>{{slot.date}}</td>
+                                    <td>{{slot.timeSlot}}</td>
+                                    <td>{{slot.price}}</td>
+                                </tr>     
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
+
             <div class="tab-pane" id="dha" role="tabpanel">
                 <br>
-                <h2>DHA BOOKING SLOTS</h2><br>
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>NAME</th>
-                            <th>DATE</th>
-                            <th>SLOT TIMING</th>
-                            <th>DETAIL</th>
-                            <th>CANCEL BOOKING</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let slot of DHABooking; let i = index">
-                            <th scope="row">{{i+1}}</th>
-                            <td>{{slot.name}}</td>
-                            <td>{{slot.date}}</td>
-                            <td>{{slot.timeSlot}}</td>
-                            <td><button type="button" md-raised-button color="primary" class="btn"  data-target="#DHAdetailModal" data-toggle="modal" (click)="detailDHABooking(i)">Detail</button></td>
-                            <td><button type="button" md-raised-button color="warn" class="btn" (click)="cancelDHABooking(i)">Cancel</button></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div *ngIf="!searchMode">
+                    <h2>GULSHAN BOOKING SLOTS</h2>
+                    <button type="submit" md-button class="float-right" (click)="searchMode=true"><i class="material-icons">search</i></button>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>NAME</th>
+                                <th>DATE</th>
+                                <th>SLOT TIMING</th>
+                                <th>DETAIL</th>
+                                <th>CANCEL BOOKING</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let slot of DHABooking | async; let i = index">
+                                <th scope="row">{{i+1}}</th>
+                                <td>{{slot.name}}</td>
+                                <td>{{slot.date}}</td>
+                                <td>{{slot.timeSlot}}</td>
+                                <td><button type="button" md-raised-button color="primary" class="btn"  data-target="#DHAdetailModal" data-toggle="modal" (click)="detailDHABooking(slot.$key)">Detail</button></td>
+                                <td><button type="button" md-raised-button color="warn" class="btn" (click)="cancelDHABooking(slot.$key)">Cancel</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div *ngIf="searchMode">
+                    <form (ngSubmit)="searchCDGK()" #search="ngForm" novalidate>
+                        <md-input-container class="col-sm-12">
+                            <input type="number"  (ngModelChange)="searchDHASlot($event)" autofocus mdInput placeholder="Search By Slot Number" [(ngModel)]="slotNumber"  name="slotNumber" id="slotNumber" required>
+                        </md-input-container>
+                        <button type="button" md-raised-button color="primary" class="float-right" (click)="searchMode=false" style="margin-right:15px">Cancel</button>
+                    </form>
+                    <br><br>
+                    <div>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>NAME</th>
+                                    <th>DATE</th>
+                                    <th>SLOT TIMING</th>
+                                    <th>PRICE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let slot of DHASearchSlots | async; let i = index">
+                                    <th scope="row">{{i+1}}</th>
+                                    <td>{{slot.name}}</td>
+                                    <td>{{slot.date}}</td>
+                                    <td>{{slot.timeSlot}}</td>
+                                    <td>{{slot.price}}</td>
+                                </tr>     
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
  </md-card-content>

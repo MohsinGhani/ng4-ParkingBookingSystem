@@ -14,12 +14,12 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let user of users; let i = index">
+                <tr *ngFor="let user of users | async; let i = index">
                     <th scope="row">{{i+1}}</th>
                     <td>{{user.name}}</td>
                     <td>{{user.email}}</td>
                     <td>{{user.status}}</td>
-                    <td><button type="button" md-raised-button color="primary" data-target="#detailModal" data-toggle="modal"  (click)="detail(i)">Detail</button></td>
+                    <td><button type="button" md-raised-button color="primary" data-target="#detailModal" data-toggle="modal"  (click)="detail(user.$key)">Detail</button></td>
                 </tr>
             </tbody>
             </table>
@@ -37,11 +37,11 @@
         </div>
         <div class="modal-body">
         <ul>
-            <li><strong>Name: </strong>{{userDetail.name}}</li>
-            <li><strong>Email: </strong>{{userDetail.email}}</li>
-            <li><strong>Address: </strong>{{userDetail.address}}</li>
-            <li><strong>Phone: </strong>{{userDetail.phone}}</li>
-            <li><strong>Status: </strong>{{userDetail.status}}</li>
+            <li><strong>Name: </strong>{{ (userDetail | async)?.name }}</li>
+            <li><strong>Email: </strong>{{ (userDetail | async)?.email }}</li>
+            <li><strong>Address: </strong>{{ (userDetail | async)?.address }}</li>
+            <li><strong>Phone: </strong>{{ (userDetail | async)?.phone}}</li>
+            <li><strong>Status: </strong>{{(userDetail | async)?.status}}</li>
         </ul>
         </div>
         <div class="modal-footer">

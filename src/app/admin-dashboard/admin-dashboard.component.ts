@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from './../services/admin.service'
+import {  FirebaseListObservable } from 'angularfire2/database';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -7,56 +8,61 @@ import { AdminService } from './../services/admin.service'
   styleUrls: ['./admin-dashboard.component.css']
 })
 export class AdminDashboardComponent implements OnInit {
-  CDGKBooking = [];
   BookingDetail = {date:'',email:'',name:'',phone:'',price:'',slotNumber:'',timeSlot:''};
-  gulshanBooking = [];
-  DHABooking = [];
+  
+  CDGKBooking:FirebaseListObservable<any>;
+  gulshanBooking:FirebaseListObservable<any>;
+  DHABooking:FirebaseListObservable<any>;
+  
+  searchMode = false;
+  slotNumber:number;
+
+  CDGKSearchSlots:FirebaseListObservable<any>;
+  GulshanSearchSlots:FirebaseListObservable<any>;
+  DHASearchSlots:FirebaseListObservable<any>;
+
   constructor(private _AdminService:AdminService) {
-    this.CDGKBooking = _AdminService.clearCDGKBooking();
-    this.CDGKBooking = _AdminService.fetchCDGKBooking();
-    this.gulshanBooking = _AdminService.clearGulshanBooking();    
+    this.CDGKBooking = _AdminService.fetchCDGKBooking();  
     this.gulshanBooking = _AdminService.fetchGulshanBooking();
-    this.DHABooking = _AdminService.clearDHABooking();
-    this.DHABooking = _AdminService.fetchDHABooking();    
+    this.DHABooking = _AdminService.fetchDHABooking();
   }
 
   ngOnInit() {
   }
 
-  detailCDGKBooking(index){
-    this.BookingDetail = this.CDGKBooking[index];
+  detailCDGKBooking(key){
+    this.BookingDetail = this._AdminService.getDetailCDGKSlot(key);
   }
 
-  detailGulshanBooking(index){
-    this.BookingDetail = this.gulshanBooking[index];
+  cancelCDGKBooking(key){
+    this._AdminService.cancelCDGKBooking(key)
   }
 
-  detailDHABooking(index){
-    this.BookingDetail = this.DHABooking[index];
+  detailGulshanBooking(key){
+    this.BookingDetail = this._AdminService.getDetailGulshanSlot(key);
   }
 
-  cancelCDGKBooking(index){
-    this._AdminService.cancelCDGKBooking(index)
-    this.CDGKBooking.splice(index, 1);
+  cancelGulshanBooking(key){
+    this._AdminService.cancelGulshanBooking(key)
   }
 
-  cancelGulshanBooking(index){
-    this._AdminService.cancelGulshanBooking(index)
-    this.gulshanBooking.splice(index, 1);
+  detailDHABooking(key){
+    this.BookingDetail = this._AdminService.getDetailDHASlot(key);
   }
 
-  cancelDHABooking(index){
-    this._AdminService.cancelDHABooking(index)
-    this.DHABooking.splice(index, 1);
+  cancelDHABooking(key){
+    this._AdminService.cancelDHABooking(key)
   }
 
-  refreshBooking(){
-    this.CDGKBooking = this._AdminService.clearCDGKBooking();
-    this.gulshanBooking = this._AdminService.clearGulshanBooking();
-    this.DHABooking = this._AdminService.clearDHABooking();
-    this.CDGKBooking = this._AdminService.fetchCDGKBooking();
-    this.gulshanBooking = this._AdminService.fetchGulshanBooking();
-    this.DHABooking = this._AdminService.fetchDHABooking();
+  searchCDGKSlot(value){
+    this.CDGKSearchSlots = this._AdminService.searchCDGKSlot(value);
   }
 
+  searchGulshanSlot(value){
+    this.GulshanSearchSlots = this._AdminService.searchGulshanSlot(value);
+  }
+
+  searchDHASlot(value){
+    this.DHASearchSlots = this._AdminService.searchDHASlot(value);
+  }
 }

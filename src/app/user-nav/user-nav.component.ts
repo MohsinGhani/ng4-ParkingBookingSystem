@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from './../services/user.service'
+import {  FirebaseObjectObservable  } from 'angularfire2/database';
 
 @Component({
   selector: 'app-user-nav',
@@ -7,9 +8,9 @@ import { UserService } from './../services/user.service'
   styleUrls: ['./user-nav.component.css']
 })
 export class UserNavComponent implements OnInit {
-  currentUser;
+  currentUser:FirebaseObjectObservable<any>;
   constructor(private _UserService:UserService) {
-    this.currentUser = JSON.parse(localStorage.getItem("currentUserData")) || [];
+    this.currentUser = _UserService.getUserName()
   }
 
   ngOnInit() {

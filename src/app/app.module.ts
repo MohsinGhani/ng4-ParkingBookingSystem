@@ -29,13 +29,13 @@ import { MyBookingComponent } from './my-booking/my-booking.component';
 import { FeedbackComponent } from './feedback/feedback.component';
 import { AdminNavComponent } from './admin-nav/admin-nav.component';
 import { UsersComponent } from './users/users.component';
-import { BookingComponent } from './booking/booking.component';
 import { AdminFeedbackComponent } from './admin-feedback/admin-feedback.component';
 import { AboutProjectComponent } from './about-project/about-project.component';
 import { AboutMeComponent } from './about-me/about-me.component';
 import { CommentsComponent } from './comments/comments.component';
 import { AuthGuard } from "app/services/auth.guard";
 import { AdminAuthGuard } from "app/services/admin-auth.guard";
+import { ConfigSlotsService } from "./config-slots.service";
 
 
 @NgModule({
@@ -56,7 +56,6 @@ import { AdminAuthGuard } from "app/services/admin-auth.guard";
     FeedbackComponent,
     AdminNavComponent,
     UsersComponent,
-    BookingComponent,
     AdminFeedbackComponent,
     AboutProjectComponent,
     AboutMeComponent,
@@ -77,7 +76,7 @@ import { AdminAuthGuard } from "app/services/admin-auth.guard";
     AngularFireDatabaseModule, // imports firebase/database, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features
   ],
-  providers: [AdminService,UserService,AuthGuard,AdminAuthGuard],
+  providers: [AdminService,UserService,AuthGuard,AdminAuthGuard,ConfigSlotsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

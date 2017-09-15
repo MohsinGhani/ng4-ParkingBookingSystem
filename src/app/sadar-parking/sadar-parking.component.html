@@ -1,105 +1,130 @@
 <app-user-nav></app-user-nav>
 <div class="container">
-<md-card>
- <md-card-content>
-  <form (ngSubmit)="selectTime()" #timingForm="ngForm" novalidate  *ngIf="selectTimeMode">
-    <button type="button" md-raised-button color="warn" class="btn btn-back" [routerLink]="['/user-dashboard']">Back</button>
-    <h2>Step#1: Select a Slot Timing</h2><br>
-    <div class="form-group">
-        <label for="date">Select Parking Date</label>
-        <input type="date" class="datepicker form-control col-sm-12" [(ngModel)]="bookingData.date" name="date" #date="ngModel" id="date" placeholder="Select Date" required>
-        <small *ngIf="dateAlert" class="alert alert-danger">Please Select Current or Future Date</small>
-    </div>
-    <!--Validation Divs For password-->
-      <div *ngIf="date.errors && (date.dirty || date.touched)" class="alert alert-danger">
-        <small [hidden]="!date.errors.required">Date is Required!</small>
-      </div>
-    
-    <div class="form-group">
-      <label for="time">Select Time</label>
-      <select class="form-control col-sm-12"  id="timeSlot" [(ngModel)]="bookingData.timeSlot" name="timeSlot" #timeSlot="ngModel" required>
-        <option *ngFor="let time of from">{{time}}</option>
-      </select>
-      <!--Validation Divs For password-->
-      <div *ngIf="timeSlot.errors && (timeSlot.dirty || timeSlot.touched)" class="alert alert-danger">
-        <small [hidden]="!timeSlot.errors.required">Time is Required!</small>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="hours">Select Reserved Hours</label>
-      <select class="form-control col-sm-12" id="time" [(ngModel)]="bookingData.reserveHours" name="reserveHours" #reserveHours="ngModel" required>
-        <option *ngFor="let hour of reserveHour">{{hour}}</option>
-      </select>
-      <!--Validation Divs For password-->
-      <div *ngIf="reserveHours.errors && (reserveHours.dirty || reserveHours.touched)" class="alert alert-danger">
-        <small [hidden]="!reserveHours.errors.required">Reserve Hours is Required!</small>
-      </div>
-      <small *ngIf="timeAlert" class="alert alert-danger">Our Parking Timing: 9am to 9pm (9:00 to 21:00)</small>
-    </div>
+    <md-card>
+        <md-card-content>
 
-    <button type="submit" md-raised-button color="primary" [disabled]="!timingForm.form.valid">Select Slot</button>
- </form>
+            <form #timingForm="ngForm" novalidate *ngIf="selectTimeMode">
+                <h2>SELECT SLOT AND TIMING</h2><br>
+
+                <md-grid-list cols="3" rowHeight="100px">
+                    <md-grid-tile>
+                        <md-input-container>
+                            <input mdInput [min]="currentdate" [max]="maxDate" [mdDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="bookingData.date" name="date" required>
+                            <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                        </md-input-container>
+                        <md-datepicker #picker (selectedChanged)="datePick($event)"></md-datepicker>
+                    </md-grid-tile>
+
+                    <md-grid-tile>
+                        <md-select placeholder="Select Time" [(ngModel)]="bookingData.timeSlot" name="hour" (ngModelChange)="timePick($event)" required>
+                            <md-option *ngFor="let time of from" [value]="time">
+                                {{time}}
+                            </md-option>
+                        </md-select>
+                    </md-grid-tile>
+
+                    <md-grid-tile>
+                        <md-select placeholder="reserve hours" [(ngModel)]="bookingData.reserveHours" name="reserveHours" (ngModelChange)="reserveHourPick($event)" required>
+                            <md-option *ngFor="let hour of reserveHour" [value]="hour">
+                                {{hour}}
+                            </md-option>
+                        </md-select>
+                    </md-grid-tile>
+                </md-grid-list>
+
+                <button type="button" data-target="#commentModal" data-toggle="modal" class="btn btn-sm btn-success btn-block">See Slots Graphically</button><br>
+                <button type="button" md-raised-button color="primary" class="slot-btn" *ngFor="let slot of CDGKslots" [disabled]="!timingForm.form.valid || slot.isReserve" (click)="bookSlot(slot.number)">Slot {{slot.number}}</button>
+
+                <!--Modal Start-->
+                <div class="modal fade" id="commentModal" tabindex="-1" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">See Suitable Slot</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <img src="./assets/images/slots.jpg" class="img-thumbnail" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Modal-->
+
+                <!-- <div class="form-group">
+                    <label for="date">Select Parking Date</label>
+                    <input type="date" class="datepicker form-control col-sm-12" [(ngModel)]="bookingData.date" name="date" #date="ngModel" id="date" placeholder="Select Date" required>
+                    <small *ngIf="dateAlert" class="alert alert-danger">Please Select Current or Future Date</small>
+                </div> -->
+                <!--Validation Divs For password-->
+                <!-- <div *ngIf="date.errors && (date.dirty || date.touched)" class="alert alert-danger">
+                    <small [hidden]="!date.errors.required">Date is Required!</small>
+                </div> -->
+
+                <!-- <div class="form-group">
+                    <label for="time">Select Time</label>
+                    <select class="form-control col-sm-12" id="timeSlot" [(ngModel)]="bookingData.timeSlot" name="timeSlot" #timeSlot="ngModel" required>
+                      <option *ngFor="let time of from">{{time}}</option>
+                    </select>
+                    Validation Divs For password
+                    <div *ngIf="timeSlot.errors && (timeSlot.dirty || timeSlot.touched)" class="alert alert-danger">
+                        <small [hidden]="!timeSlot.errors.required">Time is Required!</small>
+                    </div>
+                </div> -->
+
+                <!-- <div class="form-group">
+                    <label for="hours">Select Reserved Hours</label>
+                    <select class="form-control col-sm-12" id="time" [(ngModel)]="bookingData.reserveHours" name="reserveHours" #reserveHours="ngModel" required>
+                      <option *ngFor="let hour of reserveHour">{{hour}}</option>
+                    </select>
+                    Validation Divs For password
+                    <div *ngIf="reserveHours.errors && (reserveHours.dirty || reserveHours.touched)" class="alert alert-danger">
+                        <small [hidden]="!reserveHours.errors.required">Reserve Hours is Required!</small>
+                    </div>
+                    <small *ngIf="timeAlert" class="alert alert-danger">Our Parking Timing: 9am to 9pm (9:00 to 21:00)</small>
+                </div> -->
+
+                <!-- <button type="submit" md-raised-button color="primary" [disabled]="!timingForm.form.valid">Select Slot</button> -->
+            </form>
+
+            <div *ngIf="agreeWithInfoMode">
+                <button type="button" md-raised-button color="warn" class="btn btn-back" (click)="backToSelectSlotMode()">Back</button>
+                <h2>Do you Agree?</h2><br>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Your Parking Date</th>
+                            <td>{{bookingData.date | date}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Your Parking Time</th>
+                            <td>{{bookingData.timeSlot}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Your Parking Slot Number</th>
+                            <td>{{bookingData.slotNumber}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Your Parking Reserved Hours</th>
+                            <td>{{bookingData.reserveHours}} hours</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Price</th>
+                            <td><strong>RS.{{bookingData.price}}</strong></td>
+                        </tr>
+                        <button type="button" class="button agree-btn" md-raised-button color="primary" (click)="agree()">Agree</button>
+                        <button class="button agree-btn" md-raised-button md-hue-1 color="accent" (click)="disagree()">Disagree</button>
+                    </tbody>
+                </table>
+            </div>
+
+            <div *ngIf="successMode" class="alert alert-success" role="alert">
+                <strong>Congratulation!</strong> You successfully book parking slot number {{bookingData.slotNumber}}.<br><br>
+                <button class="button agree-btn" md-raised-button color="primary" [routerLink]="['/user-dashboard/my-booking']">See Booking Detail</button>
+            </div>
 
 
- <div *ngIf="selectSlotMode">
-   <button type="button" md-raised-button color="warn" class="btn btn-back" (click)="backToSelectTimeMode()">Back</button>
-   <h2>Step#2: Slect Slot for Parking</h2><br>
-   <button type="button" data-target="#commentModal" data-toggle="modal" class="btn btn-success btn-block">See Slots Graphically</button><br>
-   <button type="submit" md-raised-button color="primary" class="slot-btn" *ngFor="let slot of slots" [disabled]="slot.isReserve" (click)="bookSlot(slot.number)">Slot {{slot.number}}</button>
- 
-    <!--Modal Start-->
-    <div class="modal fade" id="commentModal" tabindex="-1" data-keyboard="false" data-backdrop="static">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">See Suitable Slot</h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-          <div class="modal-body">
-            <img src="./assets/images/slots.jpg" class="img-thumbnail" />
-          </div>
-        </div>
-      </div>
-    </div><!--Modal-->
- </div><!--selectSlotMode-->
-
- <div *ngIf="agreeWithInfoMode">
-        <button type="button" md-raised-button color="warn" class="btn btn-back" (click)="backToSelectSlotMode()">Back</button>
-          <h2>Step#3: Do you Agree?</h2><br>
-          <table class="table">
-            <tbody>
-              <tr>
-                <th scope="row">Your Parking Date</th>
-                <td>{{bookingData.date}}</td>
-              </tr>
-              <tr>
-                <th scope="row">Your Parking Time</th>
-                <td>{{bookingData.timeSlot}}</td>
-              </tr>
-              <tr>
-                <th scope="row">Your Parking Slot Number</th>
-                <td>{{bookingData.slotNumber}}</td>
-              </tr>
-              <tr>
-                <th scope="row">Your Parking Reserved Hours</th>
-                <td>{{bookingData.reserveHours}} hours</td>
-              </tr>
-              <tr>
-                <th scope="row">Price</th>
-                <td><strong>RS.{{bookingData.price}}</strong></td>
-              </tr>
-              <button class="button agree-btn" md-raised-button color="primary" (click)="agree()">Agree</button>
-              <button class="button agree-btn" md-raised-button md-hue-1 color="accent" (click)="disagree()">Disagree</button>
-            </tbody>
-          </table>
- </div>
- 
-  <div *ngIf="successMode" class="alert alert-success" role="alert">
-      <strong>Congratulation!</strong> You successfully book parking slot number {{bookingData.slotNumber}}.<br><br>
-      <button class="button agree-btn" md-raised-button color="primary" [routerLink]="['/user-dashboard/my-booking']">See Booking Detail</button>
-  </div>
-  
-
- </md-card-content>
-</md-card>
-</div><!--container-->
+        </md-card-content>
+    </md-card>
+</div>
+<!--container-->

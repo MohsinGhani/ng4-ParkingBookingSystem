@@ -1,0 +1,46 @@
+.container {
+    margin-top: 75px;
+}
+
+md-card {
+    min-height: 350px;
+}
+
+.you {
+    text-align: right;
+    margin-right: 40px;
+    padding: 3px;
+    margin-bottom: 5px;
+}
+
+.chatRoom {
+    height: 500px;
+    width: 100%;
+    overflow: overlay;
+}
+
+.message {
+    padding: 3px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    margin-right: 30px;
+    background-color: rgb(2, 162, 255);
+}
+
+.message h6 {
+    font-weight: bold;
+}
+
+.message img {
+    height: 50px;
+    width: 50px;
+    border-radius: 100px;
+}
+
+.message .userImage {
+    float: left !important;
+    height: 50px;
+    width: 50px;
+    border-radius: 100px;
+}

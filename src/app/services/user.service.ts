@@ -183,14 +183,14 @@ export class UserService {
     return this._AngularFireDatabase.object('/users/' + this.currentUserKey);
   }
 
-  checkUserProfile(){
+  checkUserProfile() {
     let currentUser = JSON.parse(localStorage.getItem("currentUserData")) || [];
      if(currentUser.name == "" && currentUser.address == "" && currentUser.phone == ""){
         this._Router.navigate(['user-dashboard/user-profile']);
      };
   }
 
-  updateProfile(data:any){
+  updateProfile(data:any) {
     this.currentUserKey = localStorage.getItem('currentUserKey');
     data.status = 'active';
     localStorage.setItem('currentUserData',JSON.stringify(data) );
@@ -218,8 +218,9 @@ export class UserService {
   }
 
 
-  getCDGKbooking(){
+  getCDGKbooking() {
       this.currentUserKey = localStorage.getItem('currentUserKey');
+      // console.log(this.currentUserKey)
       return this._AngularFireDatabase.list('/CDGKreservedSlotsList', {
               query: {
                 orderByChild: 'key',
@@ -228,12 +229,12 @@ export class UserService {
       });
   }
 
-  cancelCDGKBooking(key){
-    this._AngularFireDatabase.list('/CDGKreservedSlotsList').remove(key); 
+  cancelCDGKBooking(key) {
+    this._AngularFireDatabase.list('/CDGKreservedSlotsList').remove(key);
   }
 
   //////////////// gulshan booking start ///////////////////////////////
-  getGulshanBooking(){
+  getGulshanBooking() {
 
       this.currentUserKey = localStorage.getItem('currentUserKey');
       return this._AngularFireDatabase.list('/gulshanReservedSlotsList', {
@@ -257,9 +258,9 @@ export class UserService {
       // return this.currentUserGulshanBooking;
   }
 
-  cancelGulshanBooking(key){
-    this._AngularFireDatabase.list('/gulshanReservedSlotsList').remove(key); 
-  }    
+  cancelGulshanBooking(key) {
+    this._AngularFireDatabase.list('/gulshanReservedSlotsList').remove(key);
+  }
   ////////////////////DHA booking start //////////////////////////
 
   getDHAbooking(){
@@ -477,7 +478,7 @@ export class UserService {
     return this.DHAslots;
   }
 
-  feedback(data:any){
+  feedback(data:any) {
     let currentUser:any;
     this.currentUserKey = localStorage.getItem('currentUserKey');
     currentUser = JSON.parse(localStorage.getItem("currentUserData")) || [];

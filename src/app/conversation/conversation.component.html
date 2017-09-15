@@ -1,0 +1,31 @@
+<app-user-nav></app-user-nav>
+<div class="container">
+    <md-card>
+        <md-card-content>
+            <h2>Booking Slot with Chatbot</h2>
+            <hr>
+            <!-- <div class="chatRoom">
+                <div [ngClass]="{'you': msg.name != 'Bot' }" class="message" *ngFor="let msg of chat | async">
+                    <img [src]="msg.imageUrl" [ngClass]="{'userImage': msg.name != 'Bot' }">
+                    <h6>{{msg.name}}</h6>
+                    <p>{{msg.text}}</p>
+                </div>
+            </div> -->
+            <div *ngFor="let msg of chat | async">
+                <app-chat-from *ngIf="msg.name == 'Bot'" [messages]="msg"></app-chat-from>
+                <app-chat-to *ngIf="msg.name != 'Bot'" [messages]="msg"></app-chat-to>
+            </div>
+
+            <hr>
+            <form [formGroup]="chatForm" (ngSubmit)="sendMessage()">
+                <div class="form-group">
+                    <textarea type="text" class="form-control" formControlName="message"></textarea>
+                    <small class="form-text text-muted" *ngIf="!chatForm.controls['message'].valid && chatForm.controls['message'].touched">Message Field is Required</small>
+                </div>
+                <button type="submit" class="button" md-raised-button color="primary" [disabled]="!chatForm.valid">Send</button>
+            </form>
+
+        </md-card-content>
+    </md-card>
+</div>
+<!--container-->

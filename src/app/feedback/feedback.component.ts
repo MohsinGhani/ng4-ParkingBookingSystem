@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from './../services/user.service'
-import {FormBuilder,FormGroup,Validators,FormControl} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import { AngularFireDatabase, FirebaseListObservable  } from 'angularfire2/database';
 
 @Component({
@@ -9,11 +9,11 @@ import { AngularFireDatabase, FirebaseListObservable  } from 'angularfire2/datab
   styleUrls: ['./feedback.component.css']
 })
 export class FeedbackComponent implements OnInit {
-  feeds:FormGroup;
+  feeds: FormGroup;
   feedsMsg: FirebaseListObservable<any>;
   feedbackFormMode = true;
   feedbackChattingMode = false;
-  constructor(private _FormBuilder: FormBuilder,private _UserService:UserService,private _AngularFireDatabase: AngularFireDatabase) {
+  constructor(private _FormBuilder: FormBuilder, private _UserService: UserService, private _AngularFireDatabase: AngularFireDatabase) {
     _UserService.checkUserProfile();
     let currentUserKey = localStorage.getItem('currentUserKey');
     this.feedsMsg = _AngularFireDatabase.list('/feedback/' + currentUserKey);
@@ -25,18 +25,18 @@ export class FeedbackComponent implements OnInit {
   ngOnInit() {
   }
 
-  feedback(){
+  feedback() {
     this._UserService.feedback(this.feeds.value);
     this.feeds.reset();
     this.showFeedsMsg();
   }
 
-  showFeedsForm(){
+  showFeedsForm() {
     this.feedbackFormMode = true;
     this.feedbackChattingMode = false;
   }
 
-  showFeedsMsg(){
+  showFeedsMsg() {
     this.feedbackFormMode = false;
     this.feedbackChattingMode = true;
   }

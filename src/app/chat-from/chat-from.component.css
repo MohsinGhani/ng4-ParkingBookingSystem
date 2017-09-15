@@ -1,0 +1,59 @@
+.chatheaderClear {
+    border-top-right-radius: 100px;
+    background-color: #EEF0F5;
+    width: 43px;
+    height: 25px;
+    position: relative;
+    /* top: 20px; */
+}
+
+.chatheaderTitle {
+    width: 150px;
+    margin-left: -15px;
+    padding-left: 20px;
+    padding-top: 2px;
+}
+
+.backColorLightBlue {
+    background-color: rgb(222, 243, 255)!important;
+    color: rgb(2, 132, 216);
+}
+
+.chatheaderTime {
+    padding-top: 5px;
+    width: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-top-right-radius: 100px;
+}
+
+.chatmsg {
+    position: relative;
+    top: -45px;
+    min-height: 40px;
+    margin-left: 43px;
+    margin-top: 1px;
+    border-bottom-right-radius: 5px;
+    min-width: 50%;
+    max-width: 50%;
+    word-wrap: break-word;
+}
+
+.backColorSeaBlue {
+    background-color: rgb(2, 162, 255);
+}
+
+.padding5px {
+    padding: 5px;
+}
+
+.backColorDarkBlue {
+    background-color: rgb(2, 131, 207)!important;
+    color: white;
+}
+
+.image {
+    height: 50px;
+    width: 50px;
+    border-radius: 100px;
+}

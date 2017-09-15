@@ -1,0 +1,89 @@
+.padding5px {
+    padding: 5px;
+}
+
+.backColorSeaGreen {
+    background-color: rgb(7, 204, 204)!important;
+}
+
+.paddingLeft10px {
+    padding-left: 10px;
+}
+
+.flex-end {
+    align-items: flex-end;
+}
+
+.chatheaderRight {
+    font-size: 16px;
+    position: relative;
+    left: -7px;
+    height: 25px;
+    margin-right: -13px;
+}
+
+.chatheaderTimeRight {
+    padding-top: 2px;
+    width: auto;
+    padding-left: 15px;
+    padding-right: 20px;
+    border-top-left-radius: 100px;
+}
+
+.backColorDarkSeaGreen {
+    background-color: rgb(6, 161, 161)!important;
+    color: white;
+}
+
+.chatheaderTitleRight {
+    width: 140px;
+    padding-right: 31px;
+    padding-top: 2px;
+    text-align: right;
+    float: right
+}
+
+.backColorLightSeaGreen {
+    background-color: rgb(204, 240, 240)!important;
+    color: rgb(6, 161, 161);
+}
+
+.chatheaderClearRight {
+    border-top-left-radius: 100px;
+    background-color: #EEF0F5;
+    width: 43px;
+    height: 25px;
+    position: relative;
+    left: -17px;
+}
+
+.icon40px {
+    min-width: 40px;
+    min-height: 40px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50% !important;
+    position: relative;
+    /* top: -17px; */
+    left: -10px;
+}
+
+.chatmsgRight {
+    position: relative;
+    top: -35px;
+    left: -55px;
+    min-height: 40px;
+    margin-top: -5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    min-width: 50%;
+    max-width: 50%;
+    word-wrap: break-word;
+}
+
+.container {
+    background: #ccc;
+    min-width: 50%;
+    max-width: 50%;
+    align-items: flex-end;
+}

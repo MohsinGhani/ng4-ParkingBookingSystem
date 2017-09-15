@@ -1,17 +1,16 @@
-md-card{
+md-card {
     margin-top: 100px;
 }
 
-.slot-btn{
-    margin-left: 10px;
+.slot-btn {
+    margin-left: 16px;
     margin-bottom: 10px;
 }
 
-.agree-btn{
+.agree-btn {
     margin-right: 20px;
 }
 
-.btn-back{
+.btn-back {
     float: right;
 }
-

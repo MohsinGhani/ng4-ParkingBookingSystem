@@ -11,11 +11,12 @@
                     <p>{{msg.text}}</p>
                 </div>
             </div> -->
-            <div *ngFor="let msg of chat | async">
-                <app-chat-from *ngIf="msg.name == 'Bot'" [messages]="msg"></app-chat-from>
-                <app-chat-to *ngIf="msg.name != 'Bot'" [messages]="msg"></app-chat-to>
+            <div class="chatRoom">
+                <div *ngFor="let msg of chat | async">
+                    <app-chat-from *ngIf="msg.name == 'Bot'" [messages]="msg"></app-chat-from>
+                    <app-chat-to *ngIf="msg.name != 'Bot'" [messages]="msg"></app-chat-to>
+                </div>
             </div>
-
             <hr>
             <form [formGroup]="chatForm" (ngSubmit)="sendMessage()">
                 <div class="form-group">

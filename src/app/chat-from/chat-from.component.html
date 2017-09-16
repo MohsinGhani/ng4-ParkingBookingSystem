@@ -1,14 +1,6 @@
-<div class="chatheader flex-row">
-    <div class="chatheaderClear"></div>
-    <div class="chatheaderTitle backColorLightBlue">
-        {{messages?.name}}
-    </div>
-    <div class="chatheaderTime backColorDarkBlue">
-        {{messages?.timeStamp | amTimeAgo}}
-    </div>
-</div>
-<img class="image" [src]="messages.imageUrl">
-
-<div class="backColorSeaBlue chatmsg padding5px ">
-    <pre style="font-family: Roboto, 'Helvetica Neue', sans-serif;white-space: pre-wrap; color:white"> {{messages?.text}}</pre>
+<!-- <img [src]="messages?.imageUrl" class="image"> -->
+<div class="container">
+    <h6 class="name"> Parking Bot <span>{{messages?.timestamp | amTimeAgo }}</span> </h6>
+    <!-- <p> {{messages?.timestamp | amTimeAgo }} </p> -->
+    <p class="text"> {{messages?.text}} </p>
 </div>

@@ -2,20 +2,19 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import * as _cors from 'cors';
 
-var cors = _cors({ origin: true });// set these options appropriately According to your case,
+var cors = _cors({ origin: true }); // set these options appropriately According to your case,
 // see document: https://www.npmjs.com/package/cors#configuration-options
 // true means allow everything
 
+export const parkingValidation = functions.https.onRequest((request, response) => {
+    // const original = request.query.text;
+    // admin.database().ref('/messages').push({ original: original }).then(snapshot => {
+    //     res.redirect(303, snapshot.ref);
+    // });
+    console.log(request)
+});
 
-// http example
-// export const addMessage = functions.https.onRequest((req, res) => {
-//     const original = req.query.text;
-//     admin.database().ref('/messages').push({ original: original }).then(snapshot => {
-//         res.redirect(303, snapshot.ref);
-//     });
-// });
-
-//databse trigger example
+// databse trigger example
 // export const makeUppercase = functions.database.ref('/conversation/{pushId}/original')
 //     .onWrite(event => {
 //         const original = event.data.val();
@@ -24,7 +23,7 @@ var cors = _cors({ origin: true });// set these options appropriately According 
 //         return event.data.ref.parent.child('uppercase').set(uppercase);
 //     });
 
-//cors example
+// cors example
 // export const function3 = functions.https.onRequest(async (req, res) => {
 //     cors(req, res, () => {
 //         res.send("this is a function");

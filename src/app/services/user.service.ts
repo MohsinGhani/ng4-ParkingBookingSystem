@@ -487,7 +487,7 @@ export class UserService {
   }
 
   ////////////////////////////////////////////////////////////////////
-  refreshCDGKslots(){
+  refreshCDGKslots() {
     this.CDGKslots = [{"isReserve":false, "number":1},{"isReserve" : false,"number" : 2}, {"isReserve" : false,"number" : 3},
       {"isReserve" : false,"number" : 4},{"isReserve" : false,"number" : 5}, {"isReserve" : false,"number" : 6},
       {"isReserve" : false,"number" : 7},{"isReserve" : false,"number" : 8},{"isReserve" : false,"number" : 9},
@@ -512,7 +512,7 @@ export class UserService {
       ];
   }
 
-  refreshGulshanSlots(){
+  refreshGulshanSlots() {
     this.GulshanSlots = [{"isReserve":false, "number":1},{"isReserve" : false,"number" : 2}, {"isReserve" : false,"number" : 3},
       {"isReserve" : false,"number" : 4},{"isReserve" : false,"number" : 5}, {"isReserve" : false,"number" : 6},
       {"isReserve" : false,"number" : 7},{"isReserve" : false,"number" : 8},{"isReserve" : false,"number" : 9},
@@ -525,7 +525,7 @@ export class UserService {
       ];
   }
 
-  refreshDHASlots(){
+  refreshDHASlots() {
     this.DHAslots =[{"isReserve":false, "number":1},{"isReserve" : false,"number" : 2}, {"isReserve" : false,"number" : 3},
         {"isReserve" : false,"number" : 4},{"isReserve" : false,"number" : 5}, {"isReserve" : false,"number" : 6},
         {"isReserve" : false,"number" : 7},{"isReserve" : false,"number" : 8},{"isReserve" : false,"number" : 9},

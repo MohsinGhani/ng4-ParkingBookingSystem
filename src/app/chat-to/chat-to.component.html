@@ -1,15 +1,5 @@
 <div class="container">
-    <div class="chatheaderRight flex-row">
-        <div class="chatheaderTimeRight backColorDarkSeaGreen">
-            {{messages?.timestamp | amTimeAgo }}
-            <!-- <div class="chatheaderTitleRight backColorLightSeaGreen"> -->
-            {{messages?.name }}
-            <!-- </div> -->
-        </div>
-
-    </div>
-    <img [src]="messages.imageUrl" class="icon40px">
-    <div class="backColorSeaGreen">
-        <pre style="font-family: Roboto, 'Helvetica Neue', sans-serif;white-space: pre-wrap; color:white">{{messages?.text}}</pre>
-    </div>
+    <h6 class="name"> {{messages?.name }} <span> {{messages?.timestamp | amTimeAgo }}</span> </h6>
+    <p class="text"> {{messages?.text}} </p>
+    <!-- <p> {{messages?.timestamp | amTimeAgo }} </p> -->
 </div>

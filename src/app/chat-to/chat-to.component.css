@@ -1,89 +1,35 @@
-.padding5px {
-    padding: 5px;
-}
-
-.backColorSeaGreen {
-    background-color: rgb(7, 204, 204)!important;
-}
-
-.paddingLeft10px {
-    padding-left: 10px;
-}
-
-.flex-end {
-    align-items: flex-end;
-}
-
-.chatheaderRight {
-    font-size: 16px;
-    position: relative;
-    left: -7px;
-    height: 25px;
-    margin-right: -13px;
-}
-
-.chatheaderTimeRight {
-    padding-top: 2px;
-    width: auto;
-    padding-left: 15px;
-    padding-right: 20px;
-    border-top-left-radius: 100px;
-}
-
-.backColorDarkSeaGreen {
-    background-color: rgb(6, 161, 161)!important;
-    color: white;
-}
-
-.chatheaderTitleRight {
-    width: 140px;
-    padding-right: 31px;
-    padding-top: 2px;
-    text-align: right;
-    float: right
-}
-
-.backColorLightSeaGreen {
-    background-color: rgb(204, 240, 240)!important;
-    color: rgb(6, 161, 161);
-}
-
-.chatheaderClearRight {
-    border-top-left-radius: 100px;
-    background-color: #EEF0F5;
-    width: 43px;
-    height: 25px;
-    position: relative;
-    left: -17px;
-}
-
-.icon40px {
-    min-width: 40px;
-    min-height: 40px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50% !important;
-    position: relative;
-    /* top: -17px; */
-    left: -10px;
-}
-
-.chatmsgRight {
-    position: relative;
-    top: -35px;
-    left: -55px;
-    min-height: 40px;
-    margin-top: -5px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    min-width: 50%;
-    max-width: 50%;
-    word-wrap: break-word;
-}
-
 .container {
-    background: #ccc;
-    min-width: 50%;
-    max-width: 50%;
-    align-items: flex-end;
+    background: #80e5ff;
+    text-align: right;
+    line-height: 5px;
+    padding: 0px 0px 5px 00px;
+    margin-bottom: 10px;
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+}
+
+.name {
+    background: #008fb3;
+    border-top-left-radius: 100px;
+    padding: 10px 0px 15px 10px;
+    padding-right: 10px;
+    color: #fff;
+}
+
+.name span {
+    float: left;
+    margin-right: 10px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #fff;
+}
+
+.text {
+    font-size: 14px;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    margin-left: 10px;
+    margin-top: 15px;
+    color: #fff;
+    line-height: 20px;
+    padding-right: 10px;
 }

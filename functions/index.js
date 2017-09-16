@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,16 +71,9 @@ module.exports = require("firebase-functions");
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-// import { addMessage, makeUppercase, function3, function4, onConversation } from './lib/function_category1'
-// export { addMessage, makeUppercase, function3, function4, onConversation }
-var conversationFunction_1 = __webpack_require__(2);
-exports.onConversation = conversationFunction_1.onConversation;
-
+module.exports = require("firebase-admin");
 
 /***/ }),
 /* 2 */
@@ -89,9 +82,24 @@ exports.onConversation = conversationFunction_1.onConversation;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+// import { addMessage, makeUppercase, function3, function4, onConversation } from './lib/function_category1'
+// export { addMessage, makeUppercase, function3, function4, onConversation }
+var conversationFunction_1 = __webpack_require__(3);
+exports.onConversation = conversationFunction_1.onConversation;
+exports.apiAiResponse = conversationFunction_1.apiAiResponse;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
 var functions = __webpack_require__(0);
-var index_1 = __webpack_require__(3);
+var index_1 = __webpack_require__(4);
 var request = __webpack_require__(5);
+var bookedSlots = [];
 exports.onConversation = functions.database.ref('/conversation/{uid}/{pushId}')
     .onWrite(function (event) {
     var data = event.data.val();
@@ -101,12 +109,18 @@ exports.onConversation = functions.database.ref('/conversation/{uid}/{pushId}')
             // console.log("messages", data.text)
             // console.log("messages", event.params.pushId)
             var options = {
-                // tslint:disable-next-line:max-line-length
-                url: 'https://api.api.ai/api/query?v=20150910&query=' + data.text + '&lang=en&sessionId=' + event.params.uid + '&timezone=2017-03-24T21:10:33+0500',
+                url: 'https://api.api.ai/api/query?v=20150910&query=' + data.text + '&lang=en&sessionId=' +
+                    event.params.uid + '&timezone=2017-03-24T21:10:33+0500',
                 headers: {
-                    'Authorization': 'Bearer b74e0f82499f48d3a01c735824a47b95'
+                    'Authorization': 'Bearer 63bef7d0e4464fe7bc918fc9a4e1c827'
                 }
             };
+            // getting reserved slots from data base
+            // db.ref('/CDGKreservedSlotsList/').on('child_added', (snapshot) => {
+            //     // console.log('parking data', snapshot.val())
+            //     this.bookedSlots.push(snapshot.val())
+            // });
+            // sendMessageInDatabase(data, event)
             request(options, function (error, response, body) {
                 if (!error && response.statusCode === 200) {
                     // botReply.message = JSON.parse(body.result.fulfillment.speech);
@@ -124,27 +138,66 @@ exports.onConversation = functions.database.ref('/conversation/{uid}/{pushId}')
         }
     }
 });
+function sendMessageInDatabase(data, event) {
+    var options = {
+        // tslint:disable-next-line:max-line-length
+        url: 'https://api.api.ai/api/query?v=20150910&query=' + data.text + '&lang=en&sessionId=' + event.params.uid + '&timezone=2017-03-24T21:10:33+0500',
+        headers: {
+            'Authorization': 'Bearer 63bef7d0e4464fe7bc918fc9a4e1c827'
+        }
+    };
+    request(options, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            response = JSON.parse(body);
+            console.log('user msg & bot reply', data.text, response.result.fulfillment.speech);
+            var time = new Date().getTime();
+            index_1.default.ref('/conversation/' + event.params.uid + '/').push({
+                name: 'Bot',
+                imageUrl: '../assets/images/bot.jpg',
+                text: response.result.fulfillment.speech,
+                timestamp: time
+            });
+        }
+    });
+}
+// check the action of api.ai
+exports.apiAiResponse = functions.https.onRequest(function (requestt, response) {
+    switch (requestt.body.result.action) {
+        case 'booking':
+            bookingSlot(requestt, response);
+            break;
+        default:
+            response.send({ 'speech': 'Unknown Action: ' + request.action });
+    }
+    // console.log('parameters', requestt.body.result.parameters)
+    response.send({
+        'speech': 'Parameters: ' + JSON.stringify(requestt.body.result.parameters)
+    });
+});
+// tslint:disable-next-line:no-shadowed-variable
+function bookingSlot(request, response) {
+    var date = request.body.result.parameters.date;
+    var time = request.body.result.parameters.time;
+    var hours = request.body.result.parameters.hours;
+    validation(date, time, hours);
+}
+function validation(date, time, reservedHours) {
+}
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var functions = __webpack_require__(0);
-var admin = __webpack_require__(4);
+var admin = __webpack_require__(1);
 var defaultApp = admin.initializeApp(functions.config().firebase);
 var db = admin.database();
 exports.default = db;
 
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-module.exports = require("firebase-admin");
 
 /***/ }),
 /* 5 */

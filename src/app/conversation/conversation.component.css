@@ -17,6 +17,7 @@ md-card {
     height: 500px;
     width: 100%;
     overflow: overlay;
+    padding-right: 30px;
 }
 
 .message {

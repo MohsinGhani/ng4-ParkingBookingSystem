@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from './../services/user.service'
-import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
-import { AngularFireDatabase, FirebaseListObservable  } from 'angularfire2/database';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import * as moment from 'moment';
 
 @Component({
@@ -20,40 +20,62 @@ export class ConversationComponent implements OnInit {
     this.currentUserData = JSON.parse(localStorage.getItem('currentUserData')) || [];
     this.chat = _AngularFireDatabase.list('/conversation/' + this.currentUserKey);
     this.chatForm = _FormBuilder.group({
-      'message' : [null, Validators.compose([Validators.required])]
+      'message': [null, Validators.compose([Validators.required])]
     })
 
+    // console.log('outside function->re',this.test())
+    var arr = [1, 2, 2, 3, 4, 5, 5, 5, 6, 7, 7, 8, 9, 10, 10]
 
-    let date = '2017-9-19';
-    // let day = new Date().getDate()
-    // let month = new Date().getMonth();
-    // let year = new Date().getFullYear()
-    // let currentDate = `${year}-${month+1}-${day}`
-    // console.log('date', date)
-    // console.log('current date', currentDate)
-    // console.log('121: isValid', moment(date, "YYYY MM DD").isValid());
-    // console.log('122: isBefore', moment(date).isBefore(currentDate))
-    // console.log('123: isAfter',moment(date).isAfter(currentDate));
-    // console.log('124: isSame', moment(date).isSame(currentDate));
-    // console.log('125: isSameOrAfter', moment(date).isSameOrAfter(currentDate)); // usable for this project
-    // console.log('126: isSameOrBefore', moment(date).isSameOrBefore(currentDate))
-    // let isDateValid = moment(date).isSameOrAfter(currentDate) && moment(date, "YYYY MM DD").isValid() ? true:false;
-    // console.log('isDateValid',isDateValid)
-
-    console.log('isSame date = ',moment(date).isSame('9-19-2017'))
-
+    var unique = arr.filter(function (elem, index, self) {
+      return index == self.indexOf(elem);
+    })
+    console.log(unique)
   }
 
   ngOnInit() {
   }
 
+  // test(){
+  //   let snapshot = [{ slotNumber: '1', startTime: 9, endTime: 11 }, { slotNumber: '10', startTime: 9, endTime: 11 },
+  //   { slotNumber: '5', startTime: 13, endTime: 15 }, { slotNumber: '15', startTime: 13, endTime: 15 },
+  //   { slotNumber: '25', startTime: 16, endTime: 18 }, { slotNumber: '20', startTime: 16, endTime: 20 }]
+  //   let reservedSlots = [];
+  //   let startTime = 8;
+  //   let endTime = 10;
+  //   let currentReservedHours = []
+  //   let reservedHours = []
+
+  //   snapshot.forEach(slot => {
+  //     for (let i = startTime; i <= endTime; i++) {
+  //       currentReservedHours.push(i)
+  //     }
+
+  //     for (let i = slot.startTime; i <= slot.endTime; i++) {
+  //       reservedHours.push(i)
+  //     }
+
+  //     // console.log(currentReservedHours, reservedHours)
+  //     for (let index = 1; index < reservedHours.length; index++) {
+  //       for (let index1 = 0; index1 < currentReservedHours.length; index1++) {
+  //         if (reservedHours[index] === currentReservedHours[index1]) {
+  //             reservedSlots.push(slot.slotNumber)
+  //         }
+  //       }
+  //     }
+  //     currentReservedHours = []
+  //     reservedHours = []
+  //   });
+  //   console.log('reservedSlots in function', reservedSlots)
+  //   return reservedSlots;
+  // }
+
   sendMessage() {
     const time = new Date().getTime()
     const messageObject = {
-        name: this.currentUserData.name,
-        timestamp: time,
-        text: this.chatForm.value.message,
-        imageUrl: '../assets/images/user.png'
+      name: this.currentUserData.name,
+      timestamp: time,
+      text: this.chatForm.value.message,
+      imageUrl: '../assets/images/user.png'
     }
     // console.log(messageObject)
     this.chat.push(messageObject);

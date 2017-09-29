@@ -170,7 +170,8 @@ function bookingSlot(request, response) {
     var endTime = request.body.result.parameters.endTime;
     if (!date) {
         response.send({
-            'speech': "!date->Please tell me current or Future date for Parking in this format: YYYY-MM-DD"
+            'speech': "!date->Please tell me current or Future date for Parking in this format: YYYY-MM-DD",
+            "contextOut": [{ "name": "booking", "lifespan": 2 }]
         });
     }
     else {
@@ -183,14 +184,14 @@ function bookingSlot(request, response) {
         if (!isDateValid) {
             response.send({
                 'speech': "!isDateValid->Please tell me current or Future date for Parking slot in this format: YYYY-MM-DD",
-                "contextOut": [{ "name": "booking", "lifespan": 99 }]
+                "contextOut": [{ "name": "booking", "lifespan": 2 }]
             });
         }
     }
     if (!startTime) {
         response.send({
             'speech': "!startTime->Please tell me valid Start Time for Parking slot",
-            "contextOut": [{ "name": "booking", "lifespan": 99 }]
+            "contextOut": [{ "name": "booking", "lifespan": 2 }]
         });
     }
     else {
@@ -198,14 +199,20 @@ function bookingSlot(request, response) {
         if (!isStartTimeValid) {
             response.send({
                 'speech': "!isStartTimeValid->Please tell me valid Start Time",
-                "contextOut": [{ "name": "booking", "lifespan": 99 }]
+                "followupEvent": {
+                    "name": "booking",
+                    "data": {
+                        "date": "today",
+                        "startTime": "5"
+                    }
+                }
             });
         }
     }
     if (!endTime) {
         response.send({
             'speech': "!endTime->Please tell me valid ending Time for Parking slot like 1 to 12",
-            "contextOut": [{ "name": "booking", "lifespan": 99 }]
+            "contextOut": [{ "name": "booking", "lifespan": 2 }]
         });
     }
     else {
@@ -213,55 +220,33 @@ function bookingSlot(request, response) {
         if (!isEndTimeValid) {
             response.send({
                 'speech': "!isEndTimeValid->Please tell me valid ending Time for Parking slot like 1 to 12",
-                "contextOut": [{ "name": "booking", "lifespan": 99 }]
+                "contextOut": [{ "name": "booking", "lifespan": 2 }]
             });
         }
     }
     // checkReservedSlots(date,startTime,endTime);
     // console.log('result', result)
-    response.send({
-        'speech': "Reserved slot number on this date -> " + checkReservedSlots(date, startTime, endTime)
+    var reservedSlots = checkReservedSlots(date, startTime, endTime);
+    var uniqueReservedSlots = reservedSlots.filter(function (elem, index, self) {
+        return index == self.indexOf(elem);
     });
-    // var validated = validation(date, startTime, endTime,response)
-    // response.send(
-    //     {
-    //         'speech': `Parameters-> date: ${date}, start: ${startTime}, end: ${endTime}`
-    //     }
-    // )
-    // if(!validated.isDateValid || !validated.isStartTimeValid || !validated.isEndTimeValid){
-    //     let speech = '';
-    //     if(!validated.isDateValid){
-    //         speech = 'Please write current of future date'
-    //     }
-    //     else if(!validated.isStartTimeValid){
-    //         speech = 'Please write valid start time -> 1 to 12'
-    //     }
-    //     else if(!validated.isStartTimeValid){
-    //         speech = 'Please write valid end time -> 1 to 12'
-    //     }
-    //     response.send(
-    //         {
-    //             'speech': speech
-    //         }
-    //     )
-    // }
-    // else{
-    //     response.send(
-    //         {
-    //             'speech': `Parameters-> date: ${validated.isDateValid}, start: ${validated.isStartTimeValid}, end: ${validated.isEndTimeValid}`
-    //         }
-    //     )
-    // }
+    response.send({
+        'speech': "You can Reserve one slot between 1 to 100 except these " + JSON.stringify(uniqueReservedSlots)
+    });
 }
 function checkReservedSlots(date, startTime, endTime) {
+    // console.log('start and end time',startTime,endTime)
     // getting reserved slots from data base
+    var reservedSlots = [];
     index_1.default.ref('/CDGKreservedSlotsList/').on('child_added', function (snapshot) {
-        console.log('parking data', snapshot.val());
+        // console.log('parking data', snapshot.val())
+        // console.log('date->',date)
+        // console.log('db date->',snapshot.val().date)
         if (moment(date).isSame(snapshot.val().date)) {
-            // console.log('slot number --> ',snapshot.val().slotNumber)
+            // console.log('date are matche->slot number-> ',snapshot.val().slotNumber)
             var currentReservedHours = [];
             var reservedHours = [];
-            for (var i = startTime; i <= endTime; i++) {
+            for (var i = parseInt(startTime); i <= parseInt(endTime); i++) {
                 currentReservedHours.push(i);
             }
             for (var i = snapshot.val().startTime; i <= snapshot.val().endTime; i++) {
@@ -271,48 +256,53 @@ function checkReservedSlots(date, startTime, endTime) {
             // console.log('currentReservedHours', currentReservedHours)
             for (var index = 0; index < reservedHours.length; index++) {
                 for (var index1 = 0; index1 < currentReservedHours.length; index1++) {
-                    if (reservedHours[index] == currentReservedHours[index1]) {
-                        console.log('final validation -> ', snapshot.val());
+                    if (reservedHours[index] === currentReservedHours[index1]) {
+                        reservedSlots.push(snapshot.val().slotNumber);
                     }
                 }
             }
+            currentReservedHours = [];
+            reservedHours = [];
         }
     });
-    return true;
+    console.log('reservedSlots in function', reservedSlots);
+    return reservedSlots;
 }
-function validation(date, startTime, endTime, response) {
-    var day = new Date().getDate();
-    var month = new Date().getMonth();
-    var year = new Date().getFullYear();
-    var currentDate = year + "-" + (month + 1) + "-" + day;
-    // console.log('date', date)
-    // console.log('current date', currentDate)
-    // console.log('121: isValid', moment(date, "YYYY MM DD").isValid());
-    // console.log('122: isBefore', moment(date).isBefore(currentDate))
-    // console.log('123: isAfter',moment(date).isAfter(currentDate));
-    // console.log('124: isSame', moment(date).isSame(currentDate));
-    // console.log('125: isSameOrAfter', moment(date).isSameOrAfter(currentDate)); // usable for this project
-    // console.log('126: isSameOrBefore', moment(date).isSameOrBefore(currentDate))
-    var isDateValid = moment(date).isSameOrAfter(currentDate) && moment(date, "YYYY MM DD").isValid() ? true : false;
-    var isStartTimeValid = (startTime <= 12 && startTime > 0) ? true : false;
-    var isEndTimeValid = (endTime <= 12 && endTime > 0) ? true : false;
-    if (!isDateValid || !isStartTimeValid || !isEndTimeValid) {
-        var speech = '';
-        if (!isDateValid) {
-            speech = 'Please write current of future date';
-        }
-        else if (!isStartTimeValid) {
-            speech = 'Please write valid start time -> 1 to 12';
-        }
-        else if (!isStartTimeValid) {
-            speech = 'Please write valid end time -> 1 to 12';
-        }
-        response.send({
-            'speech': speech
-        });
-    }
-    return { isDateValid: isDateValid, isStartTimeValid: isStartTimeValid, isEndTimeValid: isEndTimeValid };
-}
+// function validation(date, startTime, endTime, response) {
+//     let day = new Date().getDate()
+//     let month = new Date().getMonth();
+//     let year = new Date().getFullYear()
+//     let currentDate = `${year}-${month + 1}-${day}`
+//     // console.log('date', date)
+//     // console.log('current date', currentDate)
+//     // console.log('121: isValid', moment(date, "YYYY MM DD").isValid());
+//     // console.log('122: isBefore', moment(date).isBefore(currentDate))
+//     // console.log('123: isAfter',moment(date).isAfter(currentDate));
+//     // console.log('124: isSame', moment(date).isSame(currentDate));
+//     // console.log('125: isSameOrAfter', moment(date).isSameOrAfter(currentDate)); // usable for this project
+//     // console.log('126: isSameOrBefore', moment(date).isSameOrBefore(currentDate))
+//     let isDateValid = moment(date).isSameOrAfter(currentDate) && moment(date, "YYYY MM DD").isValid() ? true : false;
+//     let isStartTimeValid = (startTime <= 12 && startTime > 0) ? true : false;
+//     let isEndTimeValid = (endTime <= 12 && endTime > 0) ? true : false;
+//     if (!isDateValid || !isStartTimeValid || !isEndTimeValid) {
+//         let speech = '';
+//         if (!isDateValid) {
+//             speech = 'Please write current of future date'
+//         }
+//         else if (!isStartTimeValid) {
+//             speech = 'Please write valid start time -> 1 to 12'
+//         }
+//         else if (!isStartTimeValid) {
+//             speech = 'Please write valid end time -> 1 to 12'
+//         }
+//         response.send(
+//             {
+//                 'speech': speech
+//             }
+//         )
+//     }
+//     return { isDateValid: isDateValid, isStartTimeValid: isStartTimeValid, isEndTimeValid: isEndTimeValid }
+// }
 
 
 /***/ }),

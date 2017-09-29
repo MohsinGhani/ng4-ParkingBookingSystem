@@ -9,8 +9,9 @@
                 <md-grid-list cols="3" rowHeight="100px">
                     <md-grid-tile>
                         <md-input-container>
-                            <input mdInput [min]="currentdate" [max]="maxDate" [mdDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="bookingData.date" name="date" required>
-                            <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                            <input mdInput [mdDatepicker]="picker" [min]="currentdate" [max]="maxDate" placeholder="Choose a date" [(ngModel)]="bookingData.date"
+                                name="date" required>
+                            <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
                         </md-input-container>
                         <md-datepicker #picker (selectedChanged)="datePick($event)"></md-datepicker>
                     </md-grid-tile>
@@ -24,7 +25,8 @@
                     </md-grid-tile>
 
                     <md-grid-tile>
-                        <md-select placeholder="reserve hours" [(ngModel)]="bookingData.reserveHours" name="reserveHours" (ngModelChange)="reserveHourPick($event)" required>
+                        <md-select placeholder="reserve hours" [(ngModel)]="bookingData.reserveHours" name="reserveHours" (ngModelChange)="reserveHourPick($event)"
+                            required>
                             <md-option *ngFor="let hour of reserveHour" [value]="hour">
                                 {{hour}}
                             </md-option>
@@ -33,7 +35,8 @@
                 </md-grid-list>
 
                 <button type="button" data-target="#commentModal" data-toggle="modal" class="btn btn-sm btn-success btn-block">See Slots Graphically</button><br>
-                <button type="button" md-raised-button color="primary" class="slot-btn" *ngFor="let slot of CDGKslots" [disabled]="!timingForm.form.valid || slot.isReserve" (click)="bookSlot(slot.number)">Slot {{slot.number}}</button>
+                <button type="button" md-raised-button color="primary" class="slot-btn" *ngFor="let slot of CDGKslots" [disabled]="!timingForm.form.valid || slot.isReserve"
+                    (click)="bookSlot(slot.number)">Slot {{slot.number}}</button>
 
                 <!--Modal Start-->
                 <div class="modal fade" id="commentModal" tabindex="-1" data-keyboard="false" data-backdrop="static">

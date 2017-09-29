@@ -1,5 +1,12 @@
 <!-- <img [src]="messages?.imageUrl" class="image"> -->
 <div class="container">
-    <h6 class="name"> Parking Bot <span>{{messages?.timestamp | amTimeAgo }}</span> </h6>
-    <p class="text"> {{messages?.text}} </p>
+    <div class="row">
+        <div class="col-sm-6" class="chat">
+            <h6 class="name"> Parking Bot <span>{{messages?.timestamp | amTimeAgo }}</span></h6>
+            <p> {{messages?.text}} </p>
+        </div>
+        <div class="col-sm-6"></div>
+    </div>
+    <!-- <h6 class="name"> Parking Bot <span>{{messages?.timestamp | amTimeAgo }}</span> </h6>
+    <p class="text"> {{messages?.text}} </p> -->
 </div>

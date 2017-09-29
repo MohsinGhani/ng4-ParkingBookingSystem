@@ -16,7 +16,6 @@ import { AdminService } from './services/admin.service'
 import { UserService } from './services/user.service';
 import { NavComponent } from './nav/nav.component'
 import {
-  MaterialModule,
   MdIconModule,
   MdButtonModule,
   MdCheckboxModule,
@@ -99,7 +98,6 @@ const firebase = {
     routing,
     MdInputModule,
     MdCardModule,
-    MaterialModule,
     MdIconModule,
     MdButtonModule,
     MdCheckboxModule,

@@ -77,8 +77,8 @@ function sendMessageInDatabase(data, event) {
 // check the action of api.ai
 export const apiAiResponse = functions.https.onRequest((requestt, response) => {
     switch (requestt.body.result.action) {
-        case 'booking':
-            bookingSlot(requestt, response);
+        case 'bookingDate':
+            bookingSlotDate(requestt, response);
             break;
 
         default:
@@ -90,18 +90,18 @@ export const apiAiResponse = functions.https.onRequest((requestt, response) => {
 });
 
 
-function bookingSlot(request, response) {
+function bookingSlotDate(request, response) {
     const date = request.body.result.parameters.date;
-    let startTime = request.body.result.parameters.startTime;
-    const endTime = request.body.result.parameters.endTime;
-
+    // let startTime = request.body.result.parameters.startTime;
+    // const endTime = request.body.result.parameters.endTime;
+    console.log('date',date)
 
 
     if (!date) {
         response.send(
             {
                 'speech': "!date->Please tell me current or Future date for Parking in this format: YYYY-MM-DD",
-                "contextOut": [{ "name": "booking", "lifespan": 2 }]
+                "contextOut": [{ "name": "bookingDate", "lifespan": 2 }]
             }
         )
     }
@@ -111,78 +111,80 @@ function bookingSlot(request, response) {
         let year = new Date().getFullYear()
         let currentDate = `${year}-${month + 1}-${day}`
         let isDateValid = moment(date).isSameOrAfter(currentDate) && moment(date, "YYYY MM DD").isValid() ? true : false;
-        // console.log('115', isDateValid, currentDate, date)
+        console.log('115', isDateValid, currentDate, date)
         if (!isDateValid) {
             response.send(
                 {
                     'speech': "!isDateValid->Please tell me current or Future date for Parking slot in this format: YYYY-MM-DD",
-                    "contextOut": [{ "name": "booking", "lifespan": 2 }]
-                }
-            )
-        }
-    }
-
-    if (!startTime) {
-        response.send(
-            {
-                'speech': "!startTime->Please tell me valid Start Time for Parking slot",
-                "contextOut": [{ "name": "booking", "lifespan": 2 }]
-
-            }
-        )
-    }
-    else {
-        let isStartTimeValid = (startTime <= 12 && startTime > 0) ? true : false;
-        if (!isStartTimeValid) {
-            response.send(
-                {
-                    'speech': "!isStartTimeValid->Please tell me valid Start Time",
                     "followupEvent": {
-                        "name": "booking",
-                        "data": {
-                           "date": "today",
-                           "startTime":"5"
-                        }
-                     }
+                        "name": "bookingDate"
+                    }
                 }
             )
         }
     }
 
-    if (!endTime) {
-        response.send(
-            {
-                'speech': "!endTime->Please tell me valid ending Time for Parking slot like 1 to 12",
-                "contextOut": [{ "name": "booking", "lifespan": 2 }]
-            }
-        )
-    }
-    else {
-        let isEndTimeValid = (endTime <= 12 && endTime > 0) ? true : false;
-        if (!isEndTimeValid) {
-            response.send(
-                {
-                    'speech': "!isEndTimeValid->Please tell me valid ending Time for Parking slot like 1 to 12",
-                    "contextOut": [{ "name": "booking", "lifespan": 2 }]
-                }
-            )
-        }
-    }
+    // // if (!startTime) {
+    // //     response.send(
+    // //         {
+    // //             'speech': "!startTime->Please tell me valid Start Time for Parking slot",
+    // //             "contextOut": [{ "name": "booking", "lifespan": 2 }]
 
-    // checkReservedSlots(date,startTime,endTime);
-    // console.log('result', result)
-    let reservedSlots = checkReservedSlots(date,startTime,endTime)
-    var uniqueReservedSlots = reservedSlots.filter(function (elem, index, self) {
-        return index == self.indexOf(elem);
-      })
-    response.send(
-        {
-            'speech': `You can Reserve one slot between 1 to 100 except these ${JSON.stringify(uniqueReservedSlots)}`
-        }
-    )
+    // //         }
+    // //     )
+    // // }
+    // // else {
+    // //     let isStartTimeValid = (startTime <= 12 && startTime > 0) ? true : false;
+    // //     if (!isStartTimeValid) {
+    // //         response.send(
+    // //             {
+    // //                 'speech': "!isStartTimeValid->Please tell me valid Start Time",
+    // //                 "followupEvent": {
+    // //                     "name": "booking",
+    // //                     "data": {
+    // //                        "date": "today",
+    // //                        "startTime":"5"
+    // //                     }
+    // //                  }
+    // //             }
+    // //         )
+    // //     }
+    // // }
+
+    // // if (!endTime) {
+    // //     response.send(
+    // //         {
+    // //             'speech': "!endTime->Please tell me valid ending Time for Parking slot like 1 to 12",
+    // //             "contextOut": [{ "name": "booking", "lifespan": 2 }]
+    // //         }
+    // //     )
+    // // }
+    // // else {
+    // //     let isEndTimeValid = (endTime <= 12 && endTime > 0) ? true : false;
+    // //     if (!isEndTimeValid) {
+    // //         response.send(
+    // //             {
+    // //                 'speech': "!isEndTimeValid->Please tell me valid ending Time for Parking slot like 1 to 12",
+    // //                 "contextOut": [{ "name": "booking", "lifespan": 2 }]
+    // //             }
+    // //         )
+    // //     }
+    // // }
+
+    // // checkReservedSlots(date,startTime,endTime);
+    // // console.log('result', result)
+    // let reservedSlots = checkReservedSlots(date,startTime,endTime)
+    // var uniqueReservedSlots = reservedSlots.filter(function (elem, index, self) {
+    //     return index == self.indexOf(elem);
+    //   })
+    // response.send(
+    //     {
+    //         'speech': `You can Reserve one slot between 1 to 100 except these ${JSON.stringify(uniqueReservedSlots)}`
+    //     }
+    // )
 }
 
-function checkReservedSlots(date,startTime,endTime) {
+function checkReservedSlots(date, startTime, endTime) {
     // console.log('start and end time',startTime,endTime)
     // getting reserved slots from data base
     let reservedSlots = [];
@@ -190,30 +192,30 @@ function checkReservedSlots(date,startTime,endTime) {
         // console.log('parking data', snapshot.val())
         // console.log('date->',date)
         // console.log('db date->',snapshot.val().date)
-        if(moment(date).isSame(snapshot.val().date)){
+        if (moment(date).isSame(snapshot.val().date)) {
             // console.log('date are matche->slot number-> ',snapshot.val().slotNumber)
             let currentReservedHours = []
             let reservedHours = []
-            for(let i = parseInt(startTime); i<=parseInt(endTime); i++){
+            for (let i = parseInt(startTime); i <= parseInt(endTime); i++) {
                 currentReservedHours.push(i)
             }
-            for(let i = snapshot.val().startTime; i<=snapshot.val().endTime; i++){
+            for (let i = snapshot.val().startTime; i <= snapshot.val().endTime; i++) {
                 reservedHours.push(i)
             }
             // console.log('reseved hours', reservedHours)
             // console.log('currentReservedHours', currentReservedHours)
             for (let index = 0; index < reservedHours.length; index++) {
                 for (let index1 = 0; index1 < currentReservedHours.length; index1++) {
-                  if (reservedHours[index] === currentReservedHours[index1]) {
-                      reservedSlots.push(snapshot.val().slotNumber)
-                  }
+                    if (reservedHours[index] === currentReservedHours[index1]) {
+                        reservedSlots.push(snapshot.val().slotNumber)
+                    }
                 }
-              }
+            }
             currentReservedHours = []
             reservedHours = []
         }
     });
-    console.log('reservedSlots in function',reservedSlots)
+    console.log('reservedSlots in function', reservedSlots)
     return reservedSlots;
 }
 

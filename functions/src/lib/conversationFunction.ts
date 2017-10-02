@@ -36,7 +36,7 @@ export let onConversation = functions.database.ref('/conversation/{uid}/{pushId}
                     if (!error && response.statusCode === 200) {
                         // botReply.message = JSON.parse(body.result.fulfillment.speech);
                         response = JSON.parse(body)
-                        console.log('user msg & bot reply', data.text, response.result.fulfillment.speech)
+                        // console.log('user msg & bot reply', data.text, response.result.fulfillment.speech)
                         const time = new Date().getTime()
                         db.ref('/conversation/' + event.params.uid + '/').push({
                             name: 'Bot',
@@ -81,6 +81,14 @@ export const apiAiResponse = functions.https.onRequest((requestt, response) => {
             bookingSlotDate(requestt, response);
             break;
 
+        case 'startTime':
+            bookingStartTime(requestt, response);
+            break;
+
+        case 'endTime':
+            bookingEndTime(requestt, response);
+            break;
+
         default:
             response.send(
                 { 'speech': 'Unknown Action: ' + request.action }
@@ -94,13 +102,13 @@ function bookingSlotDate(request, response) {
     const date = request.body.result.parameters.date;
     // let startTime = request.body.result.parameters.startTime;
     // const endTime = request.body.result.parameters.endTime;
-    console.log('date',date)
+    console.log('105:session in date', request.body.sessionId)
 
 
     if (!date) {
         response.send(
             {
-                'speech': "!date->Please tell me current or Future date for Parking in this format: YYYY-MM-DD",
+                'speech': "Please tell me current or Future date for Parking in this format: YYYY-MM-DD",
                 "contextOut": [{ "name": "bookingDate", "lifespan": 2 }]
             }
         )
@@ -111,65 +119,28 @@ function bookingSlotDate(request, response) {
         let year = new Date().getFullYear()
         let currentDate = `${year}-${month + 1}-${day}`
         let isDateValid = moment(date).isSameOrAfter(currentDate) && moment(date, "YYYY MM DD").isValid() ? true : false;
-        console.log('115', isDateValid, currentDate, date)
+        // console.log('115', isDateValid, currentDate, date)
         if (!isDateValid) {
             response.send(
                 {
-                    'speech': "!isDateValid->Please tell me current or Future date for Parking slot in this format: YYYY-MM-DD",
+                    'speech': "Please tell me Valid current or Future date for Parking slot in this format: YYYY-MM-DD",
                     "followupEvent": {
                         "name": "bookingDate"
                     }
                 }
             )
         }
+        else {
+            response.send(
+                {
+                    'speech': "Please tell me valid Start Time for Parking slot",
+                    "followupEvent": {
+                        "name": "startTime"
+                    }
+                }
+            )
+        }
     }
-
-    // // if (!startTime) {
-    // //     response.send(
-    // //         {
-    // //             'speech': "!startTime->Please tell me valid Start Time for Parking slot",
-    // //             "contextOut": [{ "name": "booking", "lifespan": 2 }]
-
-    // //         }
-    // //     )
-    // // }
-    // // else {
-    // //     let isStartTimeValid = (startTime <= 12 && startTime > 0) ? true : false;
-    // //     if (!isStartTimeValid) {
-    // //         response.send(
-    // //             {
-    // //                 'speech': "!isStartTimeValid->Please tell me valid Start Time",
-    // //                 "followupEvent": {
-    // //                     "name": "booking",
-    // //                     "data": {
-    // //                        "date": "today",
-    // //                        "startTime":"5"
-    // //                     }
-    // //                  }
-    // //             }
-    // //         )
-    // //     }
-    // // }
-
-    // // if (!endTime) {
-    // //     response.send(
-    // //         {
-    // //             'speech': "!endTime->Please tell me valid ending Time for Parking slot like 1 to 12",
-    // //             "contextOut": [{ "name": "booking", "lifespan": 2 }]
-    // //         }
-    // //     )
-    // // }
-    // // else {
-    // //     let isEndTimeValid = (endTime <= 12 && endTime > 0) ? true : false;
-    // //     if (!isEndTimeValid) {
-    // //         response.send(
-    // //             {
-    // //                 'speech': "!isEndTimeValid->Please tell me valid ending Time for Parking slot like 1 to 12",
-    // //                 "contextOut": [{ "name": "booking", "lifespan": 2 }]
-    // //             }
-    // //         )
-    // //     }
-    // // }
 
     // // checkReservedSlots(date,startTime,endTime);
     // // console.log('result', result)
@@ -182,6 +153,75 @@ function bookingSlotDate(request, response) {
     //         'speech': `You can Reserve one slot between 1 to 100 except these ${JSON.stringify(uniqueReservedSlots)}`
     //     }
     // )
+}
+
+function bookingStartTime(request, response) {
+    const startTime = request.body.result.parameters.startTime;
+    console.log('160:session in start time', request.body.sessionId)
+    if (!startTime) {
+        response.send(
+            {
+                'speech': "Please tell me valid Start Time for Parking slot",
+                "contextOut": [{ "name": "booking", "lifespan": 2 }]
+
+            }
+        )
+    }
+    else {
+        let isStartTimeValid = (startTime <= 12 && startTime > 0) ? true : false;
+        if (!isStartTimeValid) {
+            response.send(
+                {
+                    'speech': "Please tell me valid Start Time between 1 to 12",
+                    "followupEvent": {
+                        "name": "startTime",
+                    }
+                }
+            )
+        }
+        else {
+            response.send(
+                {
+                    'speech': "Please Tell me end time for parking between 1 to 12",
+                    "followupEvent": {
+                        "name": "endTime",
+                    }
+                }
+            )
+        }
+    }
+}
+
+function bookingEndTime(request, response) {
+    const endTime = request.body.result.parameters.endTime;
+    console.log('197:session in end time', request.body.sessionId)
+    if (!endTime) {
+        response.send(
+            {
+                'speech': "Please tell me valid ending Time for Parking slot like 1 to 12",
+            }
+        )
+    }
+    else {
+        let isEndTimeValid = (endTime <= 12 && endTime > 0) ? true : false;
+        if (!isEndTimeValid) {
+            response.send(
+                {
+                    'speech': "Please tell me valid ending Time for Parking slot like 1 to 12",
+                    "followupEvent": {
+                        "name": "endTime",
+                    }
+                }
+            )
+        }
+        else{
+            response.send(
+                {
+                    'speech': `Congratulation your validation has been complete`,
+                }
+            )
+        }
+    }
 }
 
 function checkReservedSlots(date, startTime, endTime) {

@@ -1,5 +1,5 @@
 .container {
-    background: #80e5ff;
+    /* background: #80e5ff; */
     text-align: right;
     line-height: 5px;
     padding: 0px 0px 5px 00px;
@@ -7,21 +7,32 @@
     border-top-left-radius: 100px;
     border-bottom-left-radius: 100px;
 }
+.chat{
+    background: #80E4FF;
+    padding: 20px 5px 20px 0px;
+    /* border-top-right-radius: 100px; */
+    margin: -8px 0px 0px 0px;
+    line-height: 20px;
+    /* border-bottom-right-radius: 100px; */
+}
 
 .name {
     background: #008fb3;
+    padding: 5px 5px 5px 5px;
+    color: #fff;
+    /* background: #008fb3;
     border-top-left-radius: 100px;
     padding: 10px 0px 15px 10px;
     padding-right: 10px;
-    color: #fff;
+    color: #fff; */
 }
 
 .name span {
     float: left;
-    margin-right: 10px;
+    /* margin-right: 10px;
     margin-top: 10px;
     font-size: 12px;
-    color: #fff;
+    color: #fff; */
 }
 
 .text {

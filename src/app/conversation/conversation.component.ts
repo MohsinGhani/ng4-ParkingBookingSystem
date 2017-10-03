@@ -23,13 +23,16 @@ export class ConversationComponent implements OnInit {
       'message': [null, Validators.compose([Validators.required])]
     })
 
-    // console.log('outside function->re',this.test())
-    var arr = [1, 2, 2, 3, 4, 5, 5, 5, 6, 7, 7, 8, 9, 10, 10]
+    // let obj;
+    // _AngularFireDatabase.database.ref('/CDGKreservedSlotsList/').on('value', (snapshot) => {
+    //     obj = snapshot.val();
+    //     for (var key in obj) {
+    //       console.log(obj[key])
+    //     }
+    // })
 
-    var unique = arr.filter(function (elem, index, self) {
-      return index == self.indexOf(elem);
-    })
-    console.log(unique)
+    
+
   }
 
   ngOnInit() {

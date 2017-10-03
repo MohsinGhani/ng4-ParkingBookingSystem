@@ -119,7 +119,7 @@ exports.onConversation = functions.database.ref('/conversation/{uid}/{pushId}')
                 if (!error && response.statusCode === 200) {
                     // botReply.message = JSON.parse(body.result.fulfillment.speech);
                     response = JSON.parse(body);
-                    console.log('user msg & bot reply', data.text, response.result.fulfillment.speech);
+                    // console.log('user msg & bot reply', data.text, response.result.fulfillment.speech)
                     var time = new Date().getTime();
                     index_1.default.ref('/conversation/' + event.params.uid + '/').push({
                         name: 'Bot',
@@ -160,19 +160,25 @@ exports.apiAiResponse = functions.https.onRequest(function (requestt, response) 
         case 'bookingDate':
             bookingSlotDate(requestt, response);
             break;
+        case 'start-end-time':
+            bookingStartTime(requestt, response);
+            break;
+        case 'endTime':
+            bookingEndTime(requestt, response);
+            break;
+        case 'slot-number':
+            slotBook(requestt, response);
+            break;
         default:
             response.send({ 'speech': 'Unknown Action: ' + request.action });
     }
 });
 function bookingSlotDate(request, response) {
     var date = request.body.result.parameters.date;
-    // let startTime = request.body.result.parameters.startTime;
-    // const endTime = request.body.result.parameters.endTime;
-    console.log('date', date);
+    var sessionId = request.body.sessionId;
     if (!date) {
         response.send({
-            'speech': "!date->Please tell me current or Future date for Parking in this format: YYYY-MM-DD",
-            "contextOut": [{ "name": "bookingDate", "lifespan": 2 }]
+            'speech': "Please tell me current or Future date for Parking in this format: YYYY-MM-DD"
         });
     }
     else {
@@ -181,76 +187,107 @@ function bookingSlotDate(request, response) {
         var year = new Date().getFullYear();
         var currentDate = year + "-" + (month + 1) + "-" + day;
         var isDateValid = moment(date).isSameOrAfter(currentDate) && moment(date, "YYYY MM DD").isValid() ? true : false;
-        console.log('115', isDateValid, currentDate, date);
+        // console.log('115', isDateValid, currentDate, date)
         if (!isDateValid) {
             response.send({
-                'speech': "!isDateValid->Please tell me current or Future date for Parking slot in this format: YYYY-MM-DD",
+                'speech': "Please tell me Valid current or Future date for Parking slot in this format: YYYY-MM-DD",
                 "followupEvent": {
                     "name": "bookingDate"
                 }
             });
         }
+        else {
+            index_1.default.ref("/helper/" + sessionId + "/date").set(date).then(function () {
+                response.send({
+                    'speech': "Please tell me valid Start Time for Parking slot",
+                    "followupEvent": {
+                        "name": "start-end-time"
+                    }
+                });
+            });
+        }
     }
-    // // if (!startTime) {
-    // //     response.send(
-    // //         {
-    // //             'speech': "!startTime->Please tell me valid Start Time for Parking slot",
-    // //             "contextOut": [{ "name": "booking", "lifespan": 2 }]
-    // //         }
-    // //     )
-    // // }
-    // // else {
-    // //     let isStartTimeValid = (startTime <= 12 && startTime > 0) ? true : false;
-    // //     if (!isStartTimeValid) {
-    // //         response.send(
-    // //             {
-    // //                 'speech': "!isStartTimeValid->Please tell me valid Start Time",
-    // //                 "followupEvent": {
-    // //                     "name": "booking",
-    // //                     "data": {
-    // //                        "date": "today",
-    // //                        "startTime":"5"
-    // //                     }
-    // //                  }
-    // //             }
-    // //         )
-    // //     }
-    // // }
-    // // if (!endTime) {
-    // //     response.send(
-    // //         {
-    // //             'speech': "!endTime->Please tell me valid ending Time for Parking slot like 1 to 12",
-    // //             "contextOut": [{ "name": "booking", "lifespan": 2 }]
-    // //         }
-    // //     )
-    // // }
-    // // else {
-    // //     let isEndTimeValid = (endTime <= 12 && endTime > 0) ? true : false;
-    // //     if (!isEndTimeValid) {
-    // //         response.send(
-    // //             {
-    // //                 'speech': "!isEndTimeValid->Please tell me valid ending Time for Parking slot like 1 to 12",
-    // //                 "contextOut": [{ "name": "booking", "lifespan": 2 }]
-    // //             }
-    // //         )
-    // //     }
-    // // }
-    // // checkReservedSlots(date,startTime,endTime);
-    // // console.log('result', result)
-    // let reservedSlots = checkReservedSlots(date,startTime,endTime)
-    // var uniqueReservedSlots = reservedSlots.filter(function (elem, index, self) {
-    //     return index == self.indexOf(elem);
-    //   })
-    // response.send(
-    //     {
-    //         'speech': `You can Reserve one slot between 1 to 100 except these ${JSON.stringify(uniqueReservedSlots)}`
-    //     }
-    // )
+}
+function bookingStartTime(request, response) {
+    var startTime = request.body.result.parameters.startTime;
+    var sessionId = request.body.sessionId;
+    if (!startTime) {
+        response.send({
+            'speech': "Please tell me valid Start Time for Parking slot",
+            "contextOut": [{ "name": "booking", "lifespan": 2 }]
+        });
+    }
+    else {
+        var isStartTimeValid = (startTime <= 12 && startTime > 0) ? true : false;
+        if (!isStartTimeValid) {
+            response.send({
+                'speech': "Please tell me valid Start Time between 1 to 12",
+                "followupEvent": {
+                    "name": "start-end-time",
+                }
+            });
+        }
+        else {
+            index_1.default.ref("/helper/" + sessionId + "/startTime").set(JSON.stringify(startTime)).then(function () {
+                bookingEndTime(request, response);
+            });
+        }
+    }
+}
+function bookingEndTime(request, response) {
+    var endTime = request.body.result.parameters.endTime;
+    var startTime = request.body.result.parameters.startTime;
+    var sessionId = request.body.sessionId;
+    var date;
+    index_1.default.ref('/helper/' + sessionId).once('value').then(function (snapshot) {
+        date = snapshot.val().date;
+    }).then(function () {
+        if (!endTime) {
+            response.send({
+                'speech': "Please tell me valid ending Time for Parking slot like 1 to 12",
+            });
+        }
+        else {
+            var isEndTimeValid = (endTime <= 12 && endTime > 0) ? true : false;
+            if (!isEndTimeValid) {
+                response.send({
+                    'speech': "Please tell me valid ending Time for Parking slot like 1 to 12",
+                    "followupEvent": {
+                        "name": "start-end-time",
+                    }
+                });
+            }
+            else {
+                if (date != undefined) {
+                    // checkReservedSlots(date, startTime, endTime,response)
+                    var reservedSlots = checkReservedSlots(date, startTime, endTime);
+                    var uniqueReservedSlots = reservedSlots.filter(function (elem, index, self) {
+                        return index == self.indexOf(elem);
+                    });
+                    response.send({
+                        // 'speech': `You can Reserve one slot between 1 to 100 except these ${JSON.stringify(uniqueReservedSlots)}`
+                        'speech': "You can Reserve one slot between 1 to 100 except these " + JSON.stringify(uniqueReservedSlots),
+                        "followupEvent": {
+                            "name": "slot-number",
+                            "data": {
+                                "reserved-slots": JSON.stringify(uniqueReservedSlots)
+                            }
+                        }
+                    });
+                }
+                else {
+                    response.send({
+                        'speech': "sorry date is undefine kindly repead this procedure again"
+                    });
+                }
+            }
+        }
+    });
 }
 function checkReservedSlots(date, startTime, endTime) {
-    // console.log('start and end time',startTime,endTime)
-    // getting reserved slots from data base
+    // console.log('date, start time, end time', date, startTime, endTime)
     var reservedSlots = [];
+    // getting reserved slots from database
     index_1.default.ref('/CDGKreservedSlotsList/').on('child_added', function (snapshot) {
         // console.log('parking data', snapshot.val())
         // console.log('date->',date)
@@ -278,44 +315,9 @@ function checkReservedSlots(date, startTime, endTime) {
             reservedHours = [];
         }
     });
-    console.log('reservedSlots in function', reservedSlots);
+    // console.log('reservedSlots in function', reservedSlots)
     return reservedSlots;
 }
-// function validation(date, startTime, endTime, response) {
-//     let day = new Date().getDate()
-//     let month = new Date().getMonth();
-//     let year = new Date().getFullYear()
-//     let currentDate = `${year}-${month + 1}-${day}`
-//     // console.log('date', date)
-//     // console.log('current date', currentDate)
-//     // console.log('121: isValid', moment(date, "YYYY MM DD").isValid());
-//     // console.log('122: isBefore', moment(date).isBefore(currentDate))
-//     // console.log('123: isAfter',moment(date).isAfter(currentDate));
-//     // console.log('124: isSame', moment(date).isSame(currentDate));
-//     // console.log('125: isSameOrAfter', moment(date).isSameOrAfter(currentDate)); // usable for this project
-//     // console.log('126: isSameOrBefore', moment(date).isSameOrBefore(currentDate))
-//     let isDateValid = moment(date).isSameOrAfter(currentDate) && moment(date, "YYYY MM DD").isValid() ? true : false;
-//     let isStartTimeValid = (startTime <= 12 && startTime > 0) ? true : false;
-//     let isEndTimeValid = (endTime <= 12 && endTime > 0) ? true : false;
-//     if (!isDateValid || !isStartTimeValid || !isEndTimeValid) {
-//         let speech = '';
-//         if (!isDateValid) {
-//             speech = 'Please write current of future date'
-//         }
-//         else if (!isStartTimeValid) {
-//             speech = 'Please write valid start time -> 1 to 12'
-//         }
-//         else if (!isStartTimeValid) {
-//             speech = 'Please write valid end time -> 1 to 12'
-//         }
-//         response.send(
-//             {
-//                 'speech': speech
-//             }
-//         )
-//     }
-//     return { isDateValid: isDateValid, isStartTimeValid: isStartTimeValid, isEndTimeValid: isEndTimeValid }
-// }
 
 
 /***/ }),

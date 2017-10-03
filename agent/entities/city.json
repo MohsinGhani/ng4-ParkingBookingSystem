@@ -1,0 +1,15 @@
+{
+  "id": "7b2f8fd6-ba2e-435d-8933-83625fa8e83b",
+  "name": "city",
+  "isOverridable": true,
+  "entries": [
+    {
+      "value": "abc",
+      "synonyms": [
+        "abc"
+      ]
+    }
+  ],
+  "isEnum": false,
+  "automatedExpansion": false
+}

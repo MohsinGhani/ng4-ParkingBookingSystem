@@ -1,0 +1,21 @@
+{
+  "id": "ed896b57-0f64-4527-ac63-d45776aca204",
+  "name": "direction",
+  "isOverridable": true,
+  "entries": [
+    {
+      "value": "forward",
+      "synonyms": [
+        "forward"
+      ]
+    },
+    {
+      "value": "backward",
+      "synonyms": [
+        "backward"
+      ]
+    }
+  ],
+  "isEnum": false,
+  "automatedExpansion": false
+}

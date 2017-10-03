@@ -1,0 +1,101 @@
+{
+  "id": "b5405b3a-af6c-499b-a266-f761779968a3",
+  "name": "start-end-time",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "start-end-time",
+      "affectedContexts": [],
+      "parameters": [
+        {
+          "id": "9a6802c3-a7b1-489f-b322-7a2d0d785848",
+          "required": true,
+          "dataType": "@sys.number",
+          "name": "startTime",
+          "value": "$startTime",
+          "prompts": [
+            "Please tell me parking start time between 1 to 12"
+          ],
+          "isList": false
+        },
+        {
+          "id": "f14cb0f0-4eb6-4680-b4f6-2472309c4389",
+          "required": true,
+          "dataType": "@sys.number",
+          "name": "endTime",
+          "value": "$endTime",
+          "prompts": [
+            "Please tell me Parking end time between 1 to 12"
+          ],
+          "isList": false
+        }
+      ],
+      "messages": [
+        {
+          "type": 0,
+          "speech": "server is down"
+        }
+      ],
+      "defaultResponsePlatforms": {},
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": true,
+  "webhookForSlotFilling": false,
+  "lastUpdate": 1507041615,
+  "fallbackIntent": false,
+  "events": [
+    {
+      "name": "start-end-time"
+    }
+  ],
+  "userSays": [
+    {
+      "id": "d5b0a90d-3eed-4d75-9acd-a6a18125bd15",
+      "data": [
+        {
+          "text": "10",
+          "alias": "startTime",
+          "meta": "@sys.number",
+          "userDefined": true
+        },
+        {
+          "text": " to "
+        },
+        {
+          "text": "11",
+          "alias": "endTime",
+          "meta": "@sys.number",
+          "userDefined": true
+        }
+      ],
+      "isTemplate": false,
+      "count": 0,
+      "updated": 1506942209,
+      "isAuto": false
+    },
+    {
+      "id": "94bb75f0-310f-4c04-b410-4de0b24a18fa",
+      "data": [
+        {
+          "text": "booking start time "
+        },
+        {
+          "text": "10",
+          "alias": "startTime",
+          "meta": "@sys.number",
+          "userDefined": false
+        }
+      ],
+      "isTemplate": false,
+      "count": 0,
+      "updated": 0,
+      "isAuto": false
+    }
+  ],
+  "followUpIntents": [],
+  "templates": []
+}

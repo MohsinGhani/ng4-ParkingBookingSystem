@@ -1,0 +1,80 @@
+{
+  "id": "b0e1c7e4-189c-422f-9db0-057dbc1dc0b7",
+  "name": "slot-number",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "slot-number",
+      "affectedContexts": [],
+      "parameters": [
+        {
+          "id": "38a64d1f-6080-4cb3-9518-e273e3e8faa4",
+          "required": true,
+          "dataType": "@sys.number-integer",
+          "name": "number-integer",
+          "value": "$number-integer",
+          "prompts": [
+            "You can Reserve one slot between 1 to 100 except these slots: #slot-number.reserved-slots"
+          ],
+          "isList": false
+        }
+      ],
+      "messages": [
+        {
+          "type": 0,
+          "speech": "server is down"
+        }
+      ],
+      "defaultResponsePlatforms": {},
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": true,
+  "webhookForSlotFilling": false,
+  "lastUpdate": 1507050665,
+  "fallbackIntent": false,
+  "events": [
+    {
+      "name": "slot-number"
+    }
+  ],
+  "userSays": [
+    {
+      "id": "dc46aa18-7af0-40d3-b85f-af1046951138",
+      "data": [
+        {
+          "text": "5",
+          "alias": "number-integer",
+          "meta": "@sys.number-integer",
+          "userDefined": true
+        }
+      ],
+      "isTemplate": false,
+      "count": 0,
+      "updated": 1507050665,
+      "isAuto": false
+    },
+    {
+      "id": "ff50218a-68c5-4a70-96b9-5a42d9f84dcb",
+      "data": [
+        {
+          "text": "i want to book slot number "
+        },
+        {
+          "text": "6",
+          "meta": "@sys.ignore",
+          "userDefined": true
+        }
+      ],
+      "isTemplate": false,
+      "count": 0,
+      "updated": 1507050305,
+      "isAuto": false
+    }
+  ],
+  "followUpIntents": [],
+  "templates": []
+}

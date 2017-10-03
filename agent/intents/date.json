@@ -1,0 +1,148 @@
+{
+  "id": "e24390a8-e16c-4a1e-a4ec-484d715193f1",
+  "name": "date",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "bookingDate",
+      "affectedContexts": [
+        {
+          "name": "booking",
+          "parameters": {},
+          "lifespan": 2
+        }
+      ],
+      "parameters": [
+        {
+          "id": "ba574a39-d257-4265-94c1-f309a7d95726",
+          "required": true,
+          "dataType": "@sys.date",
+          "name": "date",
+          "value": "$date",
+          "prompts": [
+            "Please tell me date of Parking noted date must be current or future in this format: YYYY-MM-DD",
+            "Please tell me current or Future date for Parking slot in this format: YYYY-MM-DD"
+          ],
+          "isList": false
+        }
+      ],
+      "messages": [
+        {
+          "type": 0,
+          "speech": "Server is down"
+        }
+      ],
+      "defaultResponsePlatforms": {},
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": true,
+  "webhookForSlotFilling": false,
+  "lastUpdate": 1507041049,
+  "fallbackIntent": false,
+  "events": [
+    {
+      "name": "bookingDate"
+    }
+  ],
+  "userSays": [
+    {
+      "id": "d8cea0e9-e001-46de-8915-4690c1eda7ba",
+      "data": [
+        {
+          "text": "i want to book slot "
+        },
+        {
+          "text": "today",
+          "alias": "date",
+          "meta": "@sys.date",
+          "userDefined": true
+        }
+      ],
+      "isTemplate": false,
+      "count": 0,
+      "updated": 1507041049,
+      "isAuto": false
+    },
+    {
+      "id": "0d427bb7-c66f-4da4-81c4-0e2e41c34167",
+      "data": [
+        {
+          "text": "parking"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0,
+      "updated": 1506910704,
+      "isAuto": false
+    },
+    {
+      "id": "ae18f985-03c5-4bd9-afdd-9f6a6b497310",
+      "data": [
+        {
+          "text": "today",
+          "alias": "date",
+          "meta": "@sys.date",
+          "userDefined": false
+        }
+      ],
+      "isTemplate": false,
+      "count": 0,
+      "updated": 1506702906,
+      "isAuto": false
+    },
+    {
+      "id": "2193bde2-28cf-49c0-b3b4-d0a52939f61f",
+      "data": [
+        {
+          "text": "i want to book slot"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0,
+      "updated": 0,
+      "isAuto": false
+    },
+    {
+      "id": "5d14c55d-9db6-4c52-8fd9-5bd5f9b5d4ea",
+      "data": [
+        {
+          "text": "i want to parking booking"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0,
+      "updated": 0,
+      "isAuto": false
+    },
+    {
+      "id": "5c318f4c-6356-4001-8554-a0c23b4d1f3f",
+      "data": [
+        {
+          "text": "i want to book parking slot"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0,
+      "updated": 0,
+      "isAuto": false
+    },
+    {
+      "id": "9505016d-c3fb-4b39-b4c6-87d324a58a67",
+      "data": [
+        {
+          "text": "I want to book a slot"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0,
+      "updated": 0,
+      "isAuto": false
+    }
+  ],
+  "followUpIntents": [],
+  "templates": []
+}
